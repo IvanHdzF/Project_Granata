@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 
 namespace Granata
 {
-    class Program
+    public class Stage
     {
         static void Main(string[] args)
         {

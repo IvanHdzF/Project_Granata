@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 
 namespace Granata
 {
-    class Program
+    public class Player
     {
         static void Main(string[] args)
         {
