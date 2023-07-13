@@ -7,48 +7,52 @@ namespace Granata
     {
         /***** INITIAL VARIABLES *****/
         // MAgic Numbers
-        public static int MIN_NUMBER_OF_OBSTACLE = 5;
-        public static int MAX_NUMBER_OF_OBSTACLE = 8;
+        public int MIN_NUMBER_OF_OBSTACLE = 5;
+        public int MAX_NUMBER_OF_OBSTACLE = 8;
 
         // Grid size
-        public static int gridSize = 30;
+        public int gridSize = 30;
 
         // Call and define variables
-        public static List<Obstacle> setObstacle = new List<Obstacle>;
-        public static int selectedNumberOfObstacle = 5;
+        public List<Obstacle> objectObstacleList = new List<Obstacle>();
+
+        public int selectedNumberOfObstacle = 5;
+
 
         /*//// Test variables ////*/ 
-        public static int player1X = 0;
-        public static int player1Y = 0;
-        public static int player2X = gridSize - 1;
-        public static int player2Y = gridSize - 1;
-        public static int obstacleX1 = 10;
-        public static int obstacleX2 = 15;
-        public static int obstacleY1 = 15;
-        public static int obstacleY2 = 15;
-        public static int projectileX = 6;
-        public static int projectileY = 10;
-        public static string player1Symbol = "🤡";
-        public static string player2Symbol = "👺";
+        public int player1X = 0;
+        public int player1Y = 0;
+        public int player2X = gridSize - 1;
+        public int player2Y = gridSize - 1;
+        public int obstacleX1 = 10;
+        public int obstacleX2 = 15;
+        public int obstacleY1 = 15;
+        public int obstacleY2 = 15;
+        public int projectileX = 6;
+        public int projectileY = 10;
+        public string player1Symbol = "🤡";
+        public string player2Symbol = "👺";
 
 
         //Function to initialize the object obstacle
-        internal void initializeObstacule()
+        internal void InitializeObstacule()
         {
             var obstacle = new Obstacle();
         }
 
         //Function to initialize the object player
-        internal void initializePlayer()
+        internal void InitializePlayer(int numberOfPlayer)
         {
-            var player1 = new Player();
-            var player2 = new Player();
-        }
-
-        //obstacle.obstaclearray[random].posicionx1 =   
+            List<Player> player = new List<Player>();
+            
+            for (int i = 0; i < numberOfPlayer; i++)
+            {
+                player.Add(new Player());
+            }  
+        } 
 
         // Function to get obstacles
-        public static void setObstacle()
+        public void SetListObstacle()
         {
             Random selectObstacle = new Random();
             Random selectNumberOfObstacle = new Random();
@@ -57,11 +61,53 @@ namespace Granata
 
             for (int i = 0; i < selectedNumberOfObstacle; i++)
             {
-                setObstacle[i] = obstacle.selectionOfObstacle[selectObstacle.Next(10)];
+                objectObstacleList[i].Add(obstacle.selectionOfObstacle[selectObstacle.Next(10)]);
+            }
+        }
+        
+        public void RandomSetPosition()
+        {
+            List<int> checkObstaclesX = new List<int>();
+            List<int> checkObstaclesY = new List<int>();
+            Random random = new Random();
+            int randomNumberX = 0;
+            int randomNumberY = 0;  
+            
+            for (int i = 0; i < objectObstacleList[i].Count(); i++)
+            {
+                while (True)
+                {
+                    int count = 0;
+                    randomNumberX = random.Next(4, gridSize - 4);
+                    randomNumberY = random.Next(4, gridSize - 4); 
+
+                    for (int j = 0; j < checkObstaclesX.Count(); j++) 
+                    {
+                        if ((randomNumberX > checkObstaclesX[j]) && (randomNumberX < checkObstaclesX[j] + objectObstacleList[j].width) && 
+                            (randomNumberY > checkObstaclesY[j]) && (randomNumberY < checkObstaclesY[j] + objectObstacleList[j].height))
+                        {
+                            count++;
+                        }
+                    }
+
+                    if (count == 0)
+                    {
+                        break;
+                    }
+                }
+
+                objectObstacleList[i].positionX1 = randomNumberX; // Avoid corners
+                checkObstaclesX.Add(randomNumberX);
+
+                objectObstacleList[i].positionY1 = randomNumberY; // Avoid corners
+                checkObstaclesY.Add(randomNumberY);
+
+                objectObstacleList[i].positionX2 = objectObstacleList[i].positionX1 + objectObstacleList[i].width; 
+                objectObstacleList[i].positionY2 = objectObstacleList[i].positionY1 + objectObstacleList[i].height; 
             }
         }
 
-        public static void RenderGrid()
+        public void RenderGrid()
         {
             Console.OutputEncoding = Encoding.UTF8;
             Console.Clear();
@@ -109,7 +155,7 @@ namespace Granata
             }
             Console.WriteLine();
         }
-        public static void PerformMove(char move, ref int x, ref int y)
+        public void PerformMove(char move, ref int x, ref int y)
         {
             switch (move)
             {
@@ -138,7 +184,7 @@ namespace Granata
             }
         }
 
-        public static void ThrowProjectile(int x, int y)
+        public void ThrowProjectile(int x, int y)
         {
             Console.WriteLine($"Player threw a projectile at ({x}, {y})!");
 
