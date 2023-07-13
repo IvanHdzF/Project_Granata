@@ -32,6 +32,10 @@ namespace Granata
         public int projectileY = 10;
         public string player1Symbol = "🤡";
         public string player2Symbol = "👺";
+        public string obstacleSymbol = "🈴";
+        public string projectileSymbol = "🔴";
+        public string voidSymbol = "🔴";
+
 
 
         //Function to initialize the object obstacle
@@ -111,6 +115,7 @@ namespace Granata
         {
             Console.OutputEncoding = Encoding.UTF8;
             Console.Clear();
+
             for (int y = 0; y < gridSize; y++)
             {
                 for (int x = 0; x < gridSize; x++)
@@ -123,72 +128,32 @@ namespace Granata
                     {
                         Console.Write(player2Symbol);
                     }
-
-                    for (int i = 0; i < selectedNumberOfObstacle; i++)
-                    {
-                        for (int j = setObstacle[i].obstacleX1; j < setObstacle[i].obstacleX2; j++)
-                        {
-                            for (int k = setObstacle[i].obstacleY1; k < setObstacle[i].obstacleY2; k++)
-                            {
-                                if ((x == j  && y == k ))
-                                {
-                                    Console.Write("🈴");
-                                }
-                            }
-                        }
-                    }
-
-                    else if ((x == obstacleX1 && y == obstacleY1) || (x == obstacleX2 && y == obstacleY2))
-                    {
-                        Console.Write("🈴");
-                    }
                     else if (x == projectileX && y == projectileY)
                     {
-                        Console.Write("🔴");
+                        Console.Write(projectileSymbol);
                     }
                     else
                     {
                         Console.Write("⬛");
                     }
+                    
+                    for (int i = 0; i < selectedNumberOfObstacle; i++)
+                    {
+                        for (int j = objectObstacleList[i].positionX1; j < objectObstacleList[i].positionX2; j++)
+                        {
+                            for (int k = objectObstacleList[i].positionY1; k < objectObstacleList[i].positionY2; k++)
+                            {
+                                if ((x == j  && y == k ))
+                                {
+                                    Console.Write(obstacleSymbol));
+                                } 
+                            }
+                        }
+                    }
                 }
                 Console.WriteLine();
             }
             Console.WriteLine();
-        }
-        public void PerformMove(char move, ref int x, ref int y)
-        {
-            switch (move)
-            {
-                case 'w':
-                    if (y > 0) y--;
-                    break;
-                case 'a':
-                    if (x > 0) x--;
-                    break;
-                case 's':
-                    if (y < gridSize - 1) y++;
-                    break;
-                case 'd':
-                    if (x < gridSize - 1) x++;
-                    break;
-                case 'x':
-                    Console.WriteLine("X coordinate");
-                    int i=int.Parse(Console.ReadLine());
-                    Console.WriteLine("Y coordinate");
-                    int j = int.Parse(Console.ReadLine());
-                    ThrowProjectile(i, j);
-                    break;
-                default:
-                    Console.WriteLine("Invalid move. Try again.");
-                    break;
-            }
-        }
-
-        public void ThrowProjectile(int x, int y)
-        {
-            Console.WriteLine($"Player threw a projectile at ({x}, {y})!");
-
-            // Add logic for projectile collision and effects
         }
     }
 }
