@@ -15,13 +15,13 @@ namespace Granata
             {
                 char input = Console.ReadKey().KeyChar;
                 System.Console.WriteLine();
-                switch (input)
+                switch (char.ToUpper(input))
                 {  
                     //For moving:
-                    case 'w':
-                    case 'a':
-                    case 's':
-                    case 'd':
+                    case 'W':
+                    case 'A':
+                    case 'S':
+                    case 'D':
                         //playerlist[playerN].move(input);
                         if (actionCount >= maxActionCount)
                         {

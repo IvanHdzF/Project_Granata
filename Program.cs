@@ -26,17 +26,17 @@ namespace Granata
             while (!done)
             {
 
-                Console.WriteLine("Press ENTER to start game, c for configuration, q for quit");
-                string input = Console.ReadLine();
+                Console.WriteLine("Press ENTER to start game, C for configuration, Q for quit");
+                string input = Console.ReadLine().ToUpper();
                 switch (input)
                 {
                     case "":
                         Game();
                         break;
-                    case "c":
+                    case "C":
                         UpdateConfig();
                         break;
-                    case "q":
+                    case "Q":
                         done = true;
                         break;
                 }
