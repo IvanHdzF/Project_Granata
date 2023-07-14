@@ -120,40 +120,55 @@ namespace Granata
             {
                 for (int x = 0; x < gridSize; x++)
                 {
-                    if (x == player1X && y == player1Y)
+                    if (CheckPlayers())
                     {
-                        Console.Write(player1Symbol);
-                    }
-                    else if (x == player2X && y == player2Y)
-                    {
-                        Console.Write(player2Symbol);
+                        continue;
                     }
                     else if (x == projectileX && y == projectileY)
                     {
                         Console.Write(projectileSymbol);
+                        continue;
                     }
-                    else
+                    else if(CheckObstacles(x,y))
                     {
-                        Console.Write("⬛");
+                        Console.Write(obstacle.symbol));
+                        continue;
                     }
-                    
-                    for (int i = 0; i < selectedNumberOfObstacle; i++)
-                    {
-                        for (int j = objectObstacleList[i].positionX1; j < objectObstacleList[i].positionX2; j++)
-                        {
-                            for (int k = objectObstacleList[i].positionY1; k < objectObstacleList[i].positionY2; k++)
-                            {
-                                if ((x == j  && y == k ))
-                                {
-                                    Console.Write(obstacleSymbol));
-                                } 
-                            }
-                        }
-                    }
+                    Console.Write("⬛");
                 }
                 Console.WriteLine();
             }
             Console.WriteLine();
         }
+
+        public bool CheckPlayers(int x, int y)
+        {
+            for (int i = 0; i < player.Count(); i++)
+            {
+                if ((x == player[i].positionX  && y == player[i].positionY))
+                {
+                    Console.Write(player[i].symbol);
+                    return true;
+                } 
+            }
+        }
+
+        public bool CheckObstacles(int x, int y)
+        {
+            for (int i = 0; i < selectedNumberOfObstacle; i++)
+            {
+                for (int j = objectObstacleList[i].positionX1; j < objectObstacleList[i].positionX2; j++)
+                {
+                    for (int k = objectObstacleList[i].positionY1; k < objectObstacleList[i].positionY2; k++)
+                    {
+                        if ((x == j  && y == k ))
+                        {
+                            return true;
+                        } 
+                    }
+                }
+            }
+        }
+        
     }
 }
