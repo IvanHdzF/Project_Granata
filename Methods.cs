@@ -22,7 +22,7 @@ namespace Granata
                     case 'A':
                     case 'S':
                     case 'D':
-                        //playerlist[playerN].move(input);
+                        Stage.playerlist[playerN].move(input);
                         if (actionCount >= maxActionCount)
                         {
                             done = true;
