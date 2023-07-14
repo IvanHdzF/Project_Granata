@@ -151,7 +151,7 @@ namespace Granata
                 CheckWinner();
             }
         }
-        //TODO: CheckWinner should return a ref to a player object
+        //TODO: CheckWinner should return a ref to a player object. null if no winner, and if winner the 
         static void CheckWinner()
         {
 
