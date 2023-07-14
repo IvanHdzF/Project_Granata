@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ObstacleGame
+namespace Granata
 {
     public class Obstacle
     {
@@ -11,37 +11,34 @@ namespace ObstacleGame
 
         private static Random random = new Random();
 
-        private static List<Obstacle> obstacles = new List<Obstacle>();
+        private static List<Obstacle> selectionOfObstacle = new List<Obstacle>();
 
-        public int PositionX1 { get; }
-        public int PositionX2 { get; }
-        public int PositionY1 { get; }
-        public int PositionY2 { get; }
-        public int Width { get; }
-        public int Height { get; }
-        public int HitPoints { get; private set; }
+        public int positionX1 { get; set; }
+        public int positionX2 { get; set; }
+        public int positionY1 { get; set; }
+        public int positionY2 { get; set; }
+        public int width { get; set; }
+        public int height { get; set; }
+        public int hitPoints { get; private set; }
+        public static string obstacleSymbol = "🈴";
 
-        public Obstacle(int positionX1, int positionY1, int width, int height)
+
+        public Obstacle(int w, int h)
         {
-            PositionX1 = positionX1;
-            PositionY1 = positionY1;
-            Width = width;
-            Height = height;
+            width = w;
+            height = h;
 
-            PositionX2 = positionX1 + width - 1;
-            PositionY2 = positionY1 + height - 1;
+            hitPoints = 5;
 
-            HitPoints = 5;
-
-            obstacles.Add(this);
+            selectionOfObstacle.Add(this);
         }
 
         public void HitObstacle()
         {
-            if (HitPoints > 0)
+            if (hitPoints > 0)
             {
-                HitPoints--;
-                Console.WriteLine("Obstacle hit! Remaining hit points: " + HitPoints);
+                hitPoints--;
+                Console.WriteLine("Obstacle hit! Remaining hit points: " + hitPoints);
             }
             else
             {
@@ -49,20 +46,27 @@ namespace ObstacleGame
             }
         }
 
-        public static List<Obstacle> GetAllObstacles()
+        public static List<Obstacle> GenObstacleType()
         {
-            return obstacles;
+            for (int i = 0; i < 5; i++)
+            {
+                Obstacle obstacle = GenerateRandomObstacle();
+                selectionOfObstacle.Add(obstacle);
+            }
+
+            return selectionOfObstacle;
         }
 
-        public static Obstacle GenerateRandomObstacle(int gridSize)
+        //TODO: This generation should NOT be random, must be predefined
+        public static Obstacle GenerateRandomObstacle()
         {
-            int width = random.Next(MinObstacleSize, MaxObstacleSize + 1);
-            int height = random.Next(MinObstacleSize, MaxObstacleSize + 1);
+            int w = random.Next(MinObstacleSize, MaxObstacleSize + 1);
+            int h = random.Next(MinObstacleSize, MaxObstacleSize + 1);
 
-            int positionX = random.Next(0, gridSize - width + 1);
-            int positionY = random.Next(0, gridSize - height + 1);
+            // int positionX = random.Next(0, gridSize - w + 1);
+            // int positionY = random.Next(0, gridSize - h + 1);
+            return new Obstacle(w, h);
 
-            return new Obstacle(positionX, positionY, width, height);
         }
     }
 }

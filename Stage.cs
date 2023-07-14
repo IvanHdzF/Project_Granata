@@ -18,6 +18,7 @@ namespace Granata
         public List<Obstacle> objectObstacleList = new List<Obstacle>();
 
         public int selectedNumberOfObstacle = 5;
+        List<Obstacle> selectionOfObstacle;
 
 
         // /*//// Test variables ////*/ 
@@ -42,7 +43,7 @@ namespace Granata
         //Function to initialize the object obstacle
         internal void InitializeObstacule()
         {
-            var obstacle = new Obstacle();
+           selectionOfObstacle=Obstacle.GenObstacleType();
         }
 
         //Function to initialize the object player
@@ -67,7 +68,7 @@ namespace Granata
 
             for (int i = 0; i < selectedNumberOfObstacle; i++)
             {
-                objectObstacleList[i].Add(obstacle.selectionOfObstacle[selectObstacle.Next(10)]);
+                objectObstacleList.Add(selectionOfObstacle[selectObstacle.Next(10)]);
             }
         }
 
@@ -133,7 +134,7 @@ namespace Granata
                     }
                     else if (CheckObstacles(x, y))
                     {
-                        Console.Write(obstacle.symbol);
+                        Console.Write(Obstacle.obstacleSymbol);
                         continue;
                     }
                     Console.Write("⬛");
