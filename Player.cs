@@ -15,12 +15,11 @@ namespace Granata
         public string Name { get; set; }
         public int Score { get; set; }
         public int Actions { get; set; }
+        public Projectile actualProjectile { get; set; }
 
-        //public Projectile[] Projectile { get; set; }
+        public Dictionary<string, int> Projectiles { get; set; }
 
-        public Dictionary<Projectile, int> Projectiles { get; set; }
-
-        public Player(string symbol, int hp, string name, int score, int actions, int[] position, Dictionary<Projectile, int> projectiles)
+        public Player(string symbol, int hp, string name, int score, int actions, int[] position, Dictionary<string, int> projectiles)
         {
             this.Symbol = symbol;
             this.HP = hp;
@@ -45,6 +44,7 @@ namespace Granata
 
         public void Move(char direction)
         {
+            //validar si choco con mina, obstaculo y eje de mapa
             int gridSize = 30;
             switch (direction)
             {
@@ -60,143 +60,95 @@ namespace Granata
                 case 'd':
                     if (Position[0] < gridSize - 1) Position[0]++;
                     break;
-                case '1':
-                    Throw(1, 1);
-                    break;
-                case '2':
-                    Throw(2, 1);
-                    break;
-                case '3':
-                    Throw(3, 1);
-                    break;
-                case '4':
-                    Throw(4, 1);
-                    break;
-                case '6':
-                    Throw(6, 1);
-                    break;
-                case '7':
-                    Throw(7, 1);
-                    break;
-                case '8':
-                    Throw(8, 1);
-                    break;
-                case '9':
-                    Throw(9, 1);
-                    break;
+                case ' ':
+                    Console.WriteLine("Direccion");
+                    int dir = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Tipo de Proyectil");
+                    int type = int.Parse(Console.ReadLine());
+
+                    for (int i = 0; i < actualProjectile.Frames; i++)
+                    {
+                        int mydelay = 500;
+                        Throw(dir, type);
+                        dir = collision(dir);
+                        //System.Console.WriteLine($"ubicacion proyectil en X:{ppX}  Y:{ppY}");
+                        Thread.Sleep(mydelay);
+                    }
                 default:
                     Console.WriteLine("Invalid move. Try again.");
                     break;
             }
         }
-        public static Projectile useProj1 = new Projectile(1, Position, 1, 25, 10, 1, "PP");
-
         public void Throw(int direction, int type)
         {
-            //  validation player still has projectiles types left
+            //validation player still has projectiles types left            
             foreach (var proj in this.Projectiles)
             {
                 if (proj.Key.Tipo == type && this.Projectiles[proj.Key] > 0)
                 {
                     this.Projectiles[proj.Key]--;
-
+                    valid = true;
                     break;
                 }
                 else
                 {
-                    //if not projectile type valid nor projectile type left in players deck, return exit code 1 error
-                    break;
+                    System.Console.WriteLine("Not enough projectiles of that type!");
+                    return;
                 }
             }
-
-
-
-            if (type == 1)
-            {
-                useProj1.Tipo = 1;
-                useProj1.Position = this.Position;
-                useProj1.Direction = direction;
-                useProj1.Damage = 25;
-                useProj1.Frames = 10;
-                useProj1.Area = 1;
-                useProj1.Symbol = "PP";
-            }
-            else if (type == 2)
-            {
-                useProj1.Tipo = 2;
-                useProj1.Position = this.Position;
-                useProj1.Direction = direction;
-                useProj1.Damage = 25;
-                useProj1.Frames = 10;
-                useProj1.Area = 1;
-                useProj1.Symbol = "GR";
-            }
-            else
-            {
-                useProj1.Tipo = 3;
-                useProj1.Position = this.Position;
-                useProj1.Direction = direction;
-                useProj1.Damage = 25;
-                useProj1.Frames = 10;
-                useProj1.Area = 1;
-                useProj1.Symbol = "ST";
-            }
-
-
-
 
             int mydelay = 500;
             switch (direction)
             {
                 case 1:
-                    useProj1.Position[0]--;
-                    useProj1.Position[1]++;
-                    Program.RenderGrid();
+                    actualProjectile.Position[0]--;
+                    actualProjectile.Position[1]++;
+                    RenderGrid();
                     Thread.Sleep(mydelay);
                     break;
 
                 case 2:
-                    useProj1.Position[1]++;
-                    Program.RenderGrid();
+                    actualProjectile.Position[1]++;
+                    RenderGrid();
                     Thread.Sleep(mydelay);
                     break;
 
                 case 3:
-                    useProj1.Position[0]++;
-                    useProj1.Position[1]++;
-                    Program.RenderGrid();
+                    actualProjectile.Position[0]++;
+                    actualProjectile.Position[1]++;
+                    RenderGrid();
                     Thread.Sleep(mydelay);
                     break;
 
                 case 4:
-                    useProj1.Position[0]--;
-                    Program.RenderGrid();
+                    actualProjectile.Position[0]--;
+                    RenderGrid();
                     Thread.Sleep(mydelay);
                     break;
 
                 case 6:
-                    useProj1.Position[0]++;
-                    Program.RenderGrid();
+                    actualProjectile.Position[0]++;
+                    RenderGrid();
                     Thread.Sleep(mydelay);
                     break;
 
                 case 7:
-                    useProj1.Position[0]--;
-                    useProj1.Position[1]--;
-                    Program.RenderGrid();
+                    actualProjectile.Position[0]--;
+                    actualProjectile.Position[1]--;
+                    RenderGrid();
                     Thread.Sleep(mydelay);
                     break;
 
                 case 8:
-                    useProj1.Position[1]--;
-                    Program.RenderGrid();
+                    actualProjectile.Position[1]--;
+                    RenderGrid();
                     Thread.Sleep(mydelay);
                     break;
 
                 case 9:
-                    useProj1.Position[0]++;
-                    useProj1.Position[1]--;
-                    Program.RenderGrid();
+                    actualProjectile.Position[0]++;
+                    actualProjectile.Position[1]--;
+                    RenderGrid();
                     Thread.Sleep(mydelay);
                     break;
 
@@ -205,17 +157,83 @@ namespace Granata
                     Thread.Sleep(mydelay);
                     break;
             }
-
-
-
-
-
-
-
-
-
-
-
         }
+
+        public void Refill()
+        {
+            Projectiles["PP"] = 10;
+            Projectiles["Granada"] = 2;
+            Projectiles["Sticky"] = 2;
+        }
+        static int collision(int dir)
+        {
+            if (actualProjectile.Position[0] == this.Position[0] && actualProjectile.Position[1] == this.Position[1]) // check collision with player 1
+            {
+                Console.WriteLine("Player 2 hit Player 1! Game over."); // enviar daño player 1
+                
+            }
+            if (ppX == player2X && ppY == player2Y) // check collision with player 1
+            {
+                Console.WriteLine("Player 1 hit Player 2! Game over."); // enviar daño player 1
+                
+            }
+            dir = ChangeDirection(dir);// check collision with obstacule
+            return dir;
+        }
+        static int ChangeDirection(int dir)
+        {
+            if (ppX < 0)
+            {
+                if (ppY < 0 && dir == 7)
+                    return 3; // upper left corner
+                if (ppY > 29 && dir == 1)
+                    return 9; // down left corner
+                if (dir == 7)
+                    return 9; // collision wall left
+                if (dir == 4)
+                    return 6; // collision wall left
+                if (dir == 1)
+                    return 3; // collision wall left
+            }
+            else if (ppX > 29)
+            {
+                if (ppY < 0 && dir == 9)
+                    return 1; // upper right corner
+                if (ppY > 29 && dir == 3)
+                    return 7; // down right corner
+                if (dir == 9)
+                    return 7; // collision wall right
+                if (dir == 6)
+                    return 4; // collision wall right
+                if (dir == 3)
+                    return 1; // collision wall right
+            }
+
+            if (ppY < 0)
+            {
+                if (dir == 7)
+                    return 1; // collision wall up
+                if (dir == 8)
+                    return 2; // collision wall up
+                if (dir == 9)
+                    return 3; // collision wall up
+            }
+            else if (ppY > 29) //colocar limite derecho de stage en los '29'
+            {
+                if (dir == 1)
+                    return 7; // collision wall down
+                if (dir == 2)
+                    return 8; // collision wall down
+                if (dir == 3)
+                    return 9; // collision wall down
+            }
+            // collision obstacule
+
+
+            return dir;
+        }
+
+
+
     }
 }

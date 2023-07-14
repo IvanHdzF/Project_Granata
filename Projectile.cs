@@ -10,6 +10,7 @@ namespace Granata
         public int Frames {get;set;}
         public int Area {get;set;}
         public string Symbol {get;set;}
+        
 
         public Projectile(int tipo, int[] position, int direction, int damage, int frames, int area, string symbol)
         {
