@@ -139,6 +139,14 @@ namespace Granata
         }
         static void Game()
         {
+            Stage.gridSize = stageSize;
+            // int[] pos = new int[] { 14, 14};
+            // Stage.actualProjectile = new Projectile("rock", pos , 3, 250, 15, 1, "🥎");
+            Stage.InitializePlayer(playerCount);
+            Stage.InitializeObstacule();//This sets property selectionOfObstacle
+            Stage.SetListObstacle();
+            Stage.RenderGrid();
+
             //CreateStage(stageSize);
             for (int turnCounter = 0; turnCounter < maxTurnCount; turnCounter++)
             {
@@ -148,14 +156,36 @@ namespace Granata
 
                 }
                 Methods.PlayerTurn(turnCounter % playerCount);
-                CheckWinner();
+                if (CheckWinner()) break;
             }
+            CleanBoard();
+            
         }
-        //TODO: CheckWinner should return a ref to a player object. null if no winner, and if winner the 
-        static void CheckWinner()
+        static bool CheckWinner()
         {
+            int aliveCount = 0;
+            string alive = "";
+            foreach (var player in Stage.players)
+            {
+                if (player.HP <= 0)
+                {
+                    continue;
+                }
+                aliveCount += 1;
+                alive = player.Name;
 
-            //TODO: Go throught the list of players and check their HP, add them to a list only if their HP is > 0, If len(list) ==1 then print player object
+            }
+            if (aliveCount == 1)
+            {
+                System.Console.WriteLine($"{alive} won!");
+                return true;
+            }
+            return false;
+        }
+        static void CleanBoard()
+        {
+            Stage.players.Clear();
+            Stage.objectObstacleList.Clear();
         }
 
     }

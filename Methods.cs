@@ -6,6 +6,11 @@ namespace Granata
     {
         internal static void PlayerTurn(int playerN)
         {
+            Stage.RenderGrid();
+            if (Stage.players[playerN].HP<=0)
+            {
+                return;
+            }
             System.Console.WriteLine($"Player {playerN+1} What do you want to do? WASD to Move(Max 4 times before spending your turn)/SPACE to Throw");
             bool done = false;
             int actionCount = 0;
@@ -15,14 +20,15 @@ namespace Granata
             {
                 char input = Console.ReadKey().KeyChar;
                 System.Console.WriteLine();
-                switch (char.ToUpper(input))
+                input=char.ToUpper(input);
+                switch (input)
                 {  
                     //For moving:
                     case 'W':
                     case 'A':
                     case 'S':
                     case 'D':
-                        Stage.playerlist[playerN].move(input);
+                        Stage.players[playerN].Move(input,playerN);
                         if (actionCount >= maxActionCount)
                         {
                             done = true;
@@ -40,7 +46,19 @@ namespace Granata
                     case '1':
                     case '2':
                     case '3':
-                        //playerlist[playerN].throw(int.Parse(input));
+                        int intInput=input- '0';
+                        var position=Stage.players[playerN].Position;
+                        bool playerCollision=false;
+                        int[] pos = new int[] { position[0], position[1]};
+                        //TODO: Change frame or position so that player 1 cant hit player 2 turn 1
+                        Stage.actualProjectile = new Projectile("rock", pos, input, 250, 30, 1, "⚾");
+                        for (int i = 0;i<Stage.actualProjectile.Frames;i++)
+                        {
+                            Stage.players[playerN].Throw(intInput,"1",playerN);//TODO: Implement different projectile types.
+                            (intInput,playerCollision)=Player.Collision(intInput);
+                            if (playerCollision) break;
+                        }  
+                        Stage.actualProjectile=null;  
                         done = true;
                         break;
                     default:
@@ -52,6 +70,7 @@ namespace Granata
         }
         internal static void supplyProjectiles()
         {
+            //TODO: Supply projectiles
             System.Console.WriteLine("Supplying projectiles");
             //foreach (player in playerlist)
             //player.supply()

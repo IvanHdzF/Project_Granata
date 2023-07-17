@@ -8,58 +8,47 @@ namespace Granata
     {
         /***** INITIAL VARIABLES *****/
         // MAgic Numbers
-        public int MIN_NUMBER_OF_OBSTACLE = 5;
-        public int MAX_NUMBER_OF_OBSTACLE = 8;
+        //TODO: Number of generated objects is wrong
+        public static int MIN_NUMBER_OF_OBSTACLE = 8;
+        public static int MAX_NUMBER_OF_OBSTACLE = 12;
 
         // Grid size
-        public int gridSize = 30;
+        public static int gridSize = 30;
 
         // Call and define variables
-        public List<Obstacle> objectObstacleList = new List<Obstacle>();
+        public static List<Obstacle> objectObstacleList = new List<Obstacle>();
+        public static List<Player> players = new List<Player>();
 
-        public int selectedNumberOfObstacle = 5;
-        List<Obstacle> selectionOfObstacle;
-
-
-        // /*//// Test variables ////*/ 
-        // public int player1X = 0;
-        // public int player1Y = 0;
-        // public int player2X = gridSize - 1;
-        // public int player2Y = gridSize - 1;
-        // public int obstacleX1 = 10;
-        // public int obstacleX2 = 15;
-        // public int obstacleY1 = 15;
-        // public int obstacleY2 = 15;
-        // public int projectileX = 6;
-        // public int projectileY = 10;
-        // public string player1Symbol = "🤡";
-        // public string player2Symbol = "👺";
-        // public string obstacleSymbol = "🈴";
-        // public string projectileSymbol = "🔴";
-        // public string voidSymbol = "🔴";
-
-
+        public static int selectedNumberOfObstacle = 5;
+        public static List<Obstacle> selectionOfObstacle;
+        public static Projectile actualProjectile;
 
         //Function to initialize the object obstacle
-        internal void InitializeObstacule()
+        static internal void InitializeObstacule()
         {
-           selectionOfObstacle=Obstacle.GenObstacleType();
+            selectionOfObstacle = Obstacle.GenObstacleType();
         }
 
         //Function to initialize the object player
-        //TODO: Initial conditions for player
-        internal void InitializePlayer(int numberOfPlayer)
+
+        static internal void InitializePlayer(int numberOfPlayer)
         {
-            List<Player> players = new List<Player>();
+            string[] playerSymbols = { "🤡", "👺" };//TODO: Implement for more players
+            int[] positions = { 1, 1, gridSize - 2, gridSize - 2 };
 
             for (int i = 0; i < numberOfPlayer; i++)
             {
-                players.Add(new Player());
+                var dict = new Dictionary<string, int>(){
+                {"rock",60}
+            };
+                int[] position = { positions[i* 2] , positions[i* 2+1]  };
+
+                players.Add(new Player(playerSymbols[i], 250, $"Player {i + 1}", 0, position, dict));
             }
         }
 
         // Function to get obstacles
-        public void SetListObstacle()
+        public static void SetListObstacle()
         {
             Random selectObstacle = new Random();
             Random selectNumberOfObstacle = new Random();
@@ -70,9 +59,10 @@ namespace Granata
             {
                 objectObstacleList.Add(selectionOfObstacle[selectObstacle.Next(10)]);
             }
+            RandomSetPosition();
         }
 
-        public void RandomSetPosition()
+        public static void RandomSetPosition()
         {
             List<int> checkObstaclesX = new List<int>();
             List<int> checkObstaclesY = new List<int>();
@@ -114,10 +104,11 @@ namespace Granata
             }
         }
 
-        public void RenderGrid()
+        public static void RenderGrid()
         {
             Console.OutputEncoding = Encoding.UTF8;
-            Console.Clear();
+            //Console.Clear();
+            System.Console.WriteLine("\n");
 
             for (int y = 0; y < gridSize; y++)
             {
@@ -127,37 +118,44 @@ namespace Granata
                     {
                         continue;
                     }
-                    else if (x == projectileX && y == projectileY)
-                    {
-                        Console.Write(projectileSymbol);
-                        continue;
-                    }
                     else if (CheckObstacles(x, y))
                     {
-                        Console.Write(Obstacle.obstacleSymbol);
+                        
                         continue;
                     }
+                    else if (actualProjectile != null)
+                    {
+                        if (x == actualProjectile.ProjectilePosition[0] && y == actualProjectile.ProjectilePosition[1])
+                        {
+                            Console.Write(actualProjectile.Symbol);
+                            continue;
+                        }
+                    }
+
+                    
                     Console.Write("⬛");
                 }
                 Console.WriteLine();
             }
+            System.Console.WriteLine("----------------------------------------------------------------------------------");
+            System.Console.WriteLine("\n\n\n\n");
             Console.WriteLine();
         }
 
-        public bool CheckPlayers(int x, int y)
+        public static bool CheckPlayers(int x, int y)
         {
-            for (int i = 0; i < players.Count(); i++)
+            for (int i = 0; i < players.Count; i++)
             {
-                if ((x == players[i].positionX && y == players[i].positionY))
+                if ((x == players[i].Position[0] && y == players[i].Position[1]))
                 {
-                    Console.Write(players[i].symbol);
+                    Console.Write(players[i].Symbol);
                     return true;
                 }
             }
             return false;
         }
 
-        public bool CheckObstacles(int x, int y)
+        public static bool CheckObstacles(int x, int y)
         {
             for (int i = 0; i < selectedNumberOfObstacle; i++)
             {
@@ -167,6 +165,7 @@ namespace Granata
                     {
                         if ((x == j && y == k))
                         {
+                            Console.Write(Obstacle.obstacleSymbol);
                             return true;
                         }
                     }
