@@ -9,8 +9,8 @@ namespace Granata
         /***** INITIAL VARIABLES *****/
         // MAgic Numbers
         //TODO: Number of generated objects is wrong
-        public static int MIN_NUMBER_OF_OBSTACLE = 8;
-        public static int MAX_NUMBER_OF_OBSTACLE = 12;
+        public static int MIN_NUMBER_OF_OBSTACLE = 10;
+        public static int MAX_NUMBER_OF_OBSTACLE = 14;
 
         // Grid size
         public static int gridSize = 30;
@@ -54,12 +54,13 @@ namespace Granata
             Random selectNumberOfObstacle = new Random();
 
             selectedNumberOfObstacle = selectNumberOfObstacle.Next(MIN_NUMBER_OF_OBSTACLE, MAX_NUMBER_OF_OBSTACLE);
+            
+            Console.WriteLine(selectedNumberOfObstacle);
 
-            for (int i = 0; i < selectedNumberOfObstacle; i++)
+            for (int i = 0; i < 10; i++)
             {
-                objectObstacleList.Add(selectionOfObstacle[selectObstacle.Next(10)]);
+                objectObstacleList.Add(selectionOfObstacle[i]);
             }
-            RandomSetPosition();
         }
 
         public static void RandomSetPosition()
@@ -69,6 +70,8 @@ namespace Granata
             Random random = new Random();
             int randomNumberX = 0;
             int randomNumberY = 0;
+
+            Console.WriteLine(objectObstacleList.Count);
 
             for (int i = 0; i < objectObstacleList.Count; i++)
             {
@@ -101,7 +104,24 @@ namespace Granata
 
                 objectObstacleList[i].positionX2 = objectObstacleList[i].positionX1 + objectObstacleList[i].width;
                 objectObstacleList[i].positionY2 = objectObstacleList[i].positionY1 + objectObstacleList[i].height;
+                Console.WriteLine(randomNumberX + " " + randomNumberY + " " + objectObstacleList[i].positionX2 + " " + objectObstacleList[i].positionY2 );
+                foreach (var obstacle in objectObstacleList)
+                {
+                    System.Console.WriteLine($"X1:{obstacle.positionX1}   X2:{obstacle.positionX2}");
+                    System.Console.WriteLine($"Y1:{obstacle.positionY1}   Y2:{obstacle.positionY2}");
+                    System.Console.WriteLine("\n");
+                }
+                System.Console.WriteLine("_______________________________________________________");
             }
+
+            foreach (var obstacle in objectObstacleList)
+            {
+                System.Console.WriteLine($"X1:{obstacle.positionX1}   X2:{obstacle.positionX2}");
+                System.Console.WriteLine($"Y1:{obstacle.positionY1}   Y2:{obstacle.positionY2}");
+                System.Console.WriteLine("\n");
+            }
+
+            
         }
 
         public static void RenderGrid()
@@ -109,6 +129,8 @@ namespace Granata
             Console.OutputEncoding = Encoding.UTF8;
             //Console.Clear();
             System.Console.WriteLine("\n");
+            System.Console.WriteLine("1,2,3,4,5,6,7,8,9,101112131415161718192021222324252627282930");
+
 
             for (int y = 0; y < gridSize; y++)
             {
@@ -120,7 +142,6 @@ namespace Granata
                     }
                     else if (CheckObstacles(x, y))
                     {
-                        
                         continue;
                     }
                     else if (actualProjectile != null)
@@ -157,14 +178,16 @@ namespace Granata
 
         public static bool CheckObstacles(int x, int y)
         {
-            for (int i = 0; i < selectedNumberOfObstacle; i++)
-            {
-                for (int j = objectObstacleList[i].positionX1; j < objectObstacleList[i].positionX2; j++)
+ 
+            for (int i = 0; i < objectObstacleList.Count; i++)
+            {   
+                for (int k = objectObstacleList[i].positionY1; k < objectObstacleList[i].positionY2 + 1; k++)
                 {
-                    for (int k = objectObstacleList[i].positionY1; k < objectObstacleList[i].positionY2; k++)
+                    for (int j = objectObstacleList[i].positionX1; j < objectObstacleList[i].positionX2 + 1; j++)
                     {
-                        if ((x == j && y == k))
+                        if ((y == k && x == j))
                         {
+
                             Console.Write(Obstacle.obstacleSymbol);
                             return true;
                         }
