@@ -33,15 +33,20 @@ namespace Granata
 
         static internal void InitializePlayer(int numberOfPlayer)
         {
-            string[] playerSymbols = { "🤡", "👺" };//TODO: Implement for more players
-            int[] positions = { 1, 1, gridSize - 2, gridSize - 2 };
+            string[] playerSymbols = { "🤡", "👺", "🐒", "👽" };//TODO: Implement for more players
+            int[] positions = {
+            1, 1, //Position for player 1
+            gridSize - 2, gridSize - 2, //Position for player 2
+            1, gridSize - 2, //Position for player 3
+            gridSize - 2, 1, //Position for player 4
+            };
 
             for (int i = 0; i < numberOfPlayer; i++)
             {
                 var dict = new Dictionary<string, int>(){
                 {"rock",60}
             };
-                int[] position = { positions[i* 2] , positions[i* 2+1]  };
+                int[] position = { positions[i * 2], positions[i * 2 + 1] };
 
                 players.Add(new Player(playerSymbols[i], 250, $"Player {i + 1}", 0, position, dict));
             }
@@ -120,7 +125,7 @@ namespace Granata
                     }
                     else if (CheckObstacles(x, y))
                     {
-                        
+
                         continue;
                     }
                     else if (actualProjectile != null)
@@ -132,7 +137,7 @@ namespace Granata
                         }
                     }
 
-                    
+
                     Console.Write("⬛");
                 }
                 Console.WriteLine();
