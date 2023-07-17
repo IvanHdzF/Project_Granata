@@ -156,6 +156,7 @@ namespace Granata
 
                 }
                 Methods.PlayerTurn(turnCounter % playerCount);
+                Stage.RenderGrid();
                 if (CheckWinner()) break;
             }
             CleanBoard();
