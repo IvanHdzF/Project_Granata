@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.IO;
+using System.Media;
+using NAudio.Wave;
 namespace Granata
 {
     public class Player
@@ -29,20 +31,10 @@ namespace Granata
             this.Projectiles = projectiles;
         }
 
-
-        public void PrintInventory()
+        public void Move(char direction, int playerN)
         {
-            System.Console.WriteLine($"Player 1 name: {Name}");
-            System.Console.WriteLine("CURRENT INVENTORY:");
-            foreach (var proj in Projectiles)
-            {
-                System.Console.WriteLine($"{Projectiles[proj.Key]} / {proj.Key}");
-            }
-
-        }
-
-        public void Move(char direction,int playerN)
-        {
+            System.Console.WriteLine(direction);
+            System.Console.WriteLine(playerN);
             //validar si choco con mina, obstaculo y eje de mapa
             switch (direction)
             {
@@ -82,28 +74,38 @@ namespace Granata
             }
             Stage.RenderGrid();
         }
-        public void Throw(int direction, string type, int playerN)
-        {
 
+        public void ShowInventory(int playerN)
+        {
+            System.Console.WriteLine($"HP LEFT: {Stage.players[playerN].HP}");
+            string[] types = { "Rock", "Grenade", "Mine" };
+            foreach (var key in Stage.players[playerN].Projectiles.Keys)
+            {
+                System.Console.WriteLine($"{Stage.players[playerN].Symbol} has {types[int.Parse(key) - 1]}: {Stage.players[playerN].Projectiles[key]} ");
+            }
+        }
+
+
+        public bool CheckProjectileAvailible(string type, int playerN)
+        {
             //validation player still has projectiles types left    
-            System.Console.WriteLine($"{direction}       {type}");   
-            bool valid = false;
             foreach (var proj in this.Projectiles)
             {
-                if (Stage.players[playerN].Projectiles["rock"] > 0)
+                if (Stage.players[playerN].Projectiles[type] > 0)
                 {
-                    System.Console.WriteLine("***************************");
-                    this.Projectiles[proj.Key]--;
-                    valid = true;
-                    break;
+                    Stage.players[playerN].Projectiles[type]--;
+                    return true;
                 }
                 else
                 {
                     System.Console.WriteLine("Not enough projectiles of that type!");
-                    return;
+                    return false;
                 }
             }
-
+            return false;
+        }
+        public void Throw(int direction, string type, int playerN)
+        {
             int mydelay = 250;
             switch (direction)
             {
@@ -168,36 +170,75 @@ namespace Granata
 
         public void Refill()
         {
-            Projectiles["PP"] = 10;
-            Projectiles["Granada"] = 2;
-            Projectiles["Sticky"] = 2;
+            Projectiles["1"] = 10;
+            Projectiles["2"] = 20;
+            Projectiles["3"] = 2;
         }
-        public static (int,bool) Collision(int dir)
+
+        public bool grenadeImpact()
         {
-            bool playerCollision=false;
+            int projX = Stage.actualProjectile.ProjectilePosition[0];
+            int projY = Stage.actualProjectile.ProjectilePosition[1];
+
+            for (int x = projX - 1; x < projX + 2; x++) //PRIMER FOR
+            {
+                for (int y = projY - 1; y < projY + 2; y++) //SEGUNDO FOR
+                {
+                    foreach (var player in Stage.players)
+                    {
+                        if (player.Position[0] == projX && player.Position[1] == projY)
+                        {
+                            continue;
+                        }
+                        else if (player.Position[0] == x && player.Position[1] == y)
+                        {                           
+                            player.HP -= Stage.actualProjectile.SplashDamage;
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false; //not found
+                          //returns 1 for direct hit and 2 for splash damage
+        }
+
+        public static (int, bool) Collision(int dir)
+        {
+            bool playerCollision = false;
             foreach (var player in Stage.players)
             {
-                if (Stage.actualProjectile.ProjectilePosition[0] == player.Position[0] && Stage.actualProjectile.ProjectilePosition[1] == player.Position[1]) // check collision with player 1
+                int projX = Stage.actualProjectile.ProjectilePosition[0];
+                int projY = Stage.actualProjectile.ProjectilePosition[1];
+                //direct hit
+                if (projX == player.Position[0] && projY == player.Position[1])
                 {
-                    Console.WriteLine($"{player.Name} was hit!"); 
-                    player.HP-=Stage.actualProjectile.Damage;
-                    if (player.HP<=0)player.Position[0] = 200;
-                    playerCollision=true;
-                    return (dir,playerCollision);
+                    Console.WriteLine($"{player.Name} was hit!");
+                    player.HP -= Stage.actualProjectile.Damage;
+                    playerCollision = true;
+                    if (player.HP <= 0) player.Position[0] = 200;
 
+
+
+                    Sound(Stage.actualProjectile.Tipo);
+                    return (dir, playerCollision);
 
                 }
             }
             dir = ChangeDirection(dir);// check collision with obstacule
-            return (dir,playerCollision);
+            return (dir, playerCollision);
         }
         static int ChangeDirection(int dir)
         {
-            if (Stage.actualProjectile.ProjectilePosition[0] < 0)
+
+            int NextCoordenateProyectileX = 0;
+            int NextCoordenateProyectileY = 0;
+            (NextCoordenateProyectileX, NextCoordenateProyectileY) = NextCoordenate(dir);
+
+            if (Stage.actualProjectile.ProjectilePosition[0] < 1)
             {
-                if (Stage.actualProjectile.ProjectilePosition[1] < 0 && dir == 7)
+                if (Stage.actualProjectile.ProjectilePosition[1] < 1 && dir == 7)
                     return 3; // upper left corner
-                if (Stage.actualProjectile.ProjectilePosition[1] > Stage.gridSize-1 && dir == 1)
+                if (Stage.actualProjectile.ProjectilePosition[1] > Stage.gridSize - 2 && dir == 1)
                     return 9; // down left corner
                 if (dir == 7)
                     return 9; // collision wall left
@@ -206,11 +247,11 @@ namespace Granata
                 if (dir == 1)
                     return 3; // collision wall left
             }
-            else if (Stage.actualProjectile.ProjectilePosition[0] > Stage.gridSize-1)
+            else if (Stage.actualProjectile.ProjectilePosition[0] > Stage.gridSize - 2)
             {
-                if (Stage.actualProjectile.ProjectilePosition[1] < 0 && dir == 9)
+                if (Stage.actualProjectile.ProjectilePosition[1] < 1 && dir == 9)
                     return 1; // upper right corner
-                if (Stage.actualProjectile.ProjectilePosition[1] > Stage.gridSize-1 && dir == 3)
+                if (Stage.actualProjectile.ProjectilePosition[1] > Stage.gridSize - 2 && dir == 3)
                     return 7; // down right corner
                 if (dir == 9)
                     return 7; // collision wall right
@@ -220,7 +261,7 @@ namespace Granata
                     return 1; // collision wall right
             }
 
-            if (Stage.actualProjectile.ProjectilePosition[1] < 0)
+            if (Stage.actualProjectile.ProjectilePosition[1] < 1)
             {
                 if (dir == 7)
                     return 1; // collision wall up
@@ -229,7 +270,7 @@ namespace Granata
                 if (dir == 9)
                     return 3; // collision wall up
             }
-            else if (Stage.actualProjectile.ProjectilePosition[1] > Stage.gridSize-1) 
+            else if (Stage.actualProjectile.ProjectilePosition[1] > Stage.gridSize - 2)
             {
                 if (dir == 1)
                     return 7; // collision wall down
@@ -238,41 +279,113 @@ namespace Granata
                 if (dir == 3)
                     return 9; // collision wall down
             }
-            else if (Stage.CheckObstacles(Stage.actualProjectile.ProjectilePosition[0],Stage.actualProjectile.ProjectilePosition[1]))
+            //check obstacules collisions
+
+
+
+
+            else if (Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY))
             {
-                //System.Console.WriteLine("ENTRÓ");
-                if (Stage.actualProjectile.ProjectilePosition[1] < 0 && dir == 9)
-                    return 1; // upper right corner
-                if (Stage.actualProjectile.ProjectilePosition[1] > Stage.gridSize-1 && dir == 3)
-                    return 7; // down right corner
+                if (dir == 1 && (Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY + 1)) && !(Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY - 1)))
+                    return 7; // collision wall down
+                if (dir == 2)
+                    return 8; // collision wall down
+                if (dir == 3 && (Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY + 1)))
+                    return 9; // collision wall down
+
+                if (dir == 7 && (Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY - 1)) && !(Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY + 1)))
+                    return 1; // collision wall up
+                if (dir == 8)
+                    return 2; // collision wall up
+                if (dir == 9 && (Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY - 1)))
+                    return 3; // collision wall up
+
                 if (dir == 9)
                     return 7; // collision wall right
                 if (dir == 6)
                     return 4; // collision wall right
                 if (dir == 3)
                     return 1; // collision wall right
-                if (dir == 1)
-                    return 7; // collision wall down
-                if (dir == 2)
-                    return 8; // collision wall down
-                if (dir == 3)
-                    return 9; // collision wall down
-                if (dir == 7)
-                    return 1; // collision wall up
-                if (dir == 8)
-                    return 2; // collision wall up
-                if (dir == 9)
-                    return 3; // collision wall up
+
                 if (dir == 7)
                     return 9; // collision wall left
                 if (dir == 4)
                     return 6; // collision wall left
                 if (dir == 1)
-                    return 3; // collision wall left
+                    return 3; // collision wall left  
             }
-
-
             return dir;
+        }
+        static (int, int) NextCoordenate(int dir)
+        {
+            int NextCoordenateX = Stage.actualProjectile.ProjectilePosition[0];
+            int NextCoordenateY = Stage.actualProjectile.ProjectilePosition[1];
+            switch (dir)
+            {
+                case 1:
+                    NextCoordenateX--;
+                    NextCoordenateY++;
+                    break;
+                case 2:
+                    NextCoordenateY++;
+                    break;
+                case 3:
+                    NextCoordenateX++;
+                    NextCoordenateY++;
+                    break;
+
+                case 4:
+                    NextCoordenateX--;
+                    break;
+
+                case 6:
+                    NextCoordenateX++;
+                    break;
+
+                case 7:
+                    NextCoordenateX--;
+                    NextCoordenateY--;
+                    break;
+
+                case 8:
+                    NextCoordenateY--;
+                    break;
+
+                case 9:
+                    NextCoordenateX++;
+                    NextCoordenateY--;
+                    break;
+
+                default:
+                    break;
+            }
+            return (NextCoordenateX, NextCoordenateY);
+        }
+        public static void Sound(string projType)
+        {
+            // Ruta al archivo de audio
+            string[] audios = {"Bonk.wav", "Bum.wav", "Bum.wav"};
+            string audioFilePath = audios[int.Parse(projType)-1];
+
+            // Crea un objeto WaveOut para la reproducción de audio
+            using (var waveOut = new WaveOutEvent())
+            {
+                // Crea un objeto WaveFileReader para leer el archivo de audio
+                using (var audioFileReader = new WaveFileReader(audioFilePath))
+                {
+                    // Asigna el objeto WaveFileReader al WaveOut
+                    waveOut.Init(audioFileReader);
+
+                    // Reproduce el audio
+                    waveOut.Play();
+
+                    // Espera a que se termine la reproducción
+                    while (waveOut.PlaybackState == PlaybackState.Playing)
+                    {
+                        System.Threading.Thread.Sleep(500);
+                    }
+                }
+            }
         }
     }
 }

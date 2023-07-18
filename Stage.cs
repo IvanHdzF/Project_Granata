@@ -45,11 +45,13 @@ namespace Granata
             for (int i = 0; i < numberOfPlayer; i++)
             {
                 var dict = new Dictionary<string, int>(){
-                {"rock",60}
+                {"1",10}, //rock
+                {"2",20}, //grenade
+                {"3",2} //mine
             };
-                int[] position = { positions[i * 2], positions[i * 2 + 1] };
+                int[] position = { positions[i* 2] , positions[i* 2+1]  };
 
-                players.Add(new Player(playerSymbols[i], 250, $"Player {i + 1}", 0, position, dict));
+                players.Add(new Player(playerSymbols[i], 255, $"Player {i + 1}", 0, position, dict));
             }
         }
 
@@ -75,8 +77,6 @@ namespace Granata
             Random random = new Random();
             int randomNumberX = 0;
             int randomNumberY = 0;
-
-            Console.WriteLine(objectObstacleList.Count);
 
             for (int i = 0; i < objectObstacleList.Count; i++)
             {
@@ -110,8 +110,6 @@ namespace Granata
                 objectObstacleList[i].positionX2 = objectObstacleList[i].positionX1 + objectObstacleList[i].width;
                 objectObstacleList[i].positionY2 = objectObstacleList[i].positionY1 + objectObstacleList[i].height;
             }
-
-            
         }
 
         public static void RenderGrid()
