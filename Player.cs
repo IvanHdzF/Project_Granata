@@ -286,6 +286,8 @@ namespace Granata
 
             else if (Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY))
             {
+                int index = Stage.ObstacleCollision(NextCoordenateProyectileX, NextCoordenateProyectileY);
+                Obstacle.HitObstacle(index);
                 if (dir == 1 && (Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY + 1)) && !(Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY - 1)))
                     return 7; // collision wall down
                 if (dir == 2)

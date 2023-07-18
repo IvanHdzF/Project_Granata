@@ -91,11 +91,11 @@ namespace Granata
             switch(type)
             {
                 case "1":
-                return new Projectile("1", pos, dir, 25, 30, 0, "⚾");
+                return new Projectile("1", pos, dir, 25, 130, 0, "⚾");
                 break;
 
                 case "2":
-                return new Projectile("2", pos, dir, 75, 25, 25, "💣");
+                return new Projectile("2", pos, dir, 75, 5, 25, "💣");
                 break;
 
                 case "3":
