@@ -104,7 +104,7 @@ namespace Granata
                 }
             }
 
-            int mydelay = 500;
+            int mydelay = 250;
             switch (direction)
             {
                 case 1:
