@@ -50,7 +50,6 @@ namespace Granata
         // Function to get obstacles
         public static void SetListObstacle()
         {
-            Random selectObstacle = new Random();
             Random selectNumberOfObstacle = new Random();
 
             selectedNumberOfObstacle = selectNumberOfObstacle.Next(MIN_NUMBER_OF_OBSTACLE, MAX_NUMBER_OF_OBSTACLE);
