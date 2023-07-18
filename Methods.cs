@@ -19,11 +19,11 @@ namespace Granata
             //By default the player can move up to 4 times, and throw only once.
             while (!done)
             {   
-                Console.BackgroundColor = ConsoleColor.DarkBlue;
-                Console.ForegroundColor = ConsoleColor.White;
+                //Console.BackgroundColor = ConsoleColor.DarkBlue;
+                //Console.ForegroundColor = ConsoleColor.White;
                 System.Console.Write($"Player {playerN+1} What do you want to do? WASD to Move(You have {maxActionCount-actionCount} move actions left to end turn)\nNumberpad numbers to Throw.............................................................");
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.ForegroundColor = ConsoleColor.Black;
+                //Console.BackgroundColor = ConsoleColor.Black;
+                //Console.ForegroundColor = ConsoleColor.Black;
                 System.Console.WriteLine("\n");
                 char input = Console.ReadKey().KeyChar;
                 System.Console.WriteLine();

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Granata
 {
@@ -25,18 +27,31 @@ namespace Granata
             bool done = false;
             while (!done)
             {
+                Console.OutputEncoding = Encoding.UTF8;
+                string title= "             🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥      🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥";
+                string title2= "             🟥         🟥      🟥 🟥      🟥         🟥     🟥             🟥";
+                string title3= "             🟥         🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥";
+                string title4= "             🟥         🟥         🟥      🟥 🟥      🟥     🟥     🟥      🟥";
+                string title5= "             🟥         🟥         🟥      🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥\n";
+                Console.WriteLine(title);
+                Console.WriteLine(title2);
+                Console.WriteLine(title3);
+                Console.WriteLine(title4);
+                Console.WriteLine(title5);
 
-                Console.WriteLine("Press ENTER to start game, C for configuration, Q for quit");
+                Console.WriteLine("          🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
+                Console.WriteLine("          🟥  Press ENTER ↩️  to start game, 🅰️  for configuration, 🅱️  for quit   🟥");
+                Console.WriteLine("          🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
                 string input = Console.ReadLine().ToUpper();
                 switch (input)
                 {
                     case "":
                         Game();
                         break;
-                    case "C":
+                    case "A":
                         UpdateConfig();
                         break;
-                    case "Q":
+                    case "B":
                         done = true;
                         break;
                 }
