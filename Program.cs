@@ -145,6 +145,7 @@ namespace Granata
             Stage.InitializePlayer(playerCount);
             Stage.InitializeObstacule();//This sets property selectionOfObstacle
             Stage.SetListObstacle();
+            Stage.RandomSetPosition();
             Stage.RenderGrid();
 
             //CreateStage(stageSize);
