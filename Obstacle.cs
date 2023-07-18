@@ -30,7 +30,7 @@ namespace Granata
 
             hitPoints = 5;
 
-            selectionOfObstacle.Add(this);
+            //selectionOfObstacle.Add(this);
         }
 
         public void HitObstacle()
@@ -48,7 +48,7 @@ namespace Granata
 
         public static List<Obstacle> GenObstacleType()
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < Stage.MAX_NUMBER_OF_OBSTACLE; i++)
             {
                 Obstacle obstacle = GenerateRandomObstacle();
                 selectionOfObstacle.Add(obstacle);
