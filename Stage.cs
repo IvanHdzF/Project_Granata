@@ -116,6 +116,7 @@ namespace Granata
 
         public static void RenderGrid()
         {
+            Console.CursorVisible = false;
             Console.OutputEncoding = Encoding.UTF8;
             Console.Clear();
             System.Console.WriteLine("\n");
@@ -152,6 +153,7 @@ namespace Granata
             System.Console.WriteLine(matrixLine);
             System.Console.WriteLine("----------------------------------------------------------------------------------");
             Console.WriteLine();
+            Console.CursorVisible = true;
         }
 
         public static bool CheckPlayers(int x, int y)
