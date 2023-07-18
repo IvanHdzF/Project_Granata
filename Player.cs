@@ -39,18 +39,34 @@ namespace Granata
             switch (direction)
             {
                 case 'W':
+                    if (Stage.CheckObstacles(Stage.players[playerN].Position[0], Stage.players[playerN].Position[1] - 1))
+                    {
+                        return;
+                    }
                     if (Stage.players[playerN].Position[1] > 0) Stage.players[playerN].Position[1]--;
                     break;
                 case 'A':
+                    if (Stage.CheckObstacles(Stage.players[playerN].Position[0] - 1, Stage.players[playerN].Position[1]))
+                    {
+                        return;
+                    }
                     if (Stage.players[playerN].Position[0] > 0)
                     {
                         Stage.players[playerN].Position[0]--;
-                    } 
+                    }
                     break;
                 case 'S':
+                    if (Stage.CheckObstacles(Stage.players[playerN].Position[0], Stage.players[playerN].Position[1] + 1))
+                    {
+                        return;
+                    }
                     if (Stage.players[playerN].Position[1] < Stage.gridSize - 1) Stage.players[playerN].Position[1]++;
                     break;
                 case 'D':
+                    if (Stage.CheckObstacles(Stage.players[playerN].Position[0] + 1, Stage.players[playerN].Position[1]))
+                    {
+                        return;
+                    }
                     if (Stage.players[playerN].Position[0] < Stage.gridSize - 1) Stage.players[playerN].Position[0]++;
                     break;
                     // case ' ':
@@ -191,7 +207,7 @@ namespace Granata
                             continue;
                         }
                         else if (player.Position[0] == x && player.Position[1] == y)
-                        {                           
+                        {
                             player.HP -= Stage.actualProjectile.SplashDamage;
                             return true;
                         }
@@ -364,8 +380,8 @@ namespace Granata
         public static void Sound(string projType)
         {
             // Ruta al archivo de audio
-            string[] audios = {"Bonk.wav", "Bum.wav", "Bum.wav"};
-            string audioFilePath = audios[int.Parse(projType)-1];
+            string[] audios = { "Bonk.wav", "Bum.wav", "Bum.wav" };
+            string audioFilePath = audios[int.Parse(projType) - 1];
 
             // Crea un objeto WaveOut para la reproducción de audio
             using (var waveOut = new WaveOutEvent())
