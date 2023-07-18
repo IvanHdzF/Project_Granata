@@ -6,6 +6,7 @@ namespace Granata
 {
     public class Obstacle
     {
+        private static int lastId = 0;
         private const int MinObstacleSize = 2;
         private const int MaxObstacleSize = 3;
 
@@ -14,6 +15,7 @@ namespace Granata
         private static List<Obstacle> selectionOfObstacle = new List<Obstacle>();
 
         public int positionX1 { get; set; }
+        public int id { get; set; }
         public int positionX2 { get; set; }
         public int positionY1 { get; set; }
         public int positionY2 { get; set; }
@@ -22,26 +24,33 @@ namespace Granata
         public int hitPoints { get; private set; }
         public static string obstacleSymbol = "🈂️";
 
+        
 
         public Obstacle(int w, int h)
         {
             width = w;
             height = h;
-
+            id = lastId++;
             hitPoints = 5;
 
             //selectionOfObstacle.Add(this);
         }
 
-        public void HitObstacle()
-        {
-            if (hitPoints > 0)
+        public static async void HitObstacle(int i)
+        {   
+            
+            if (Stage.objectObstacleList[i].hitPoints > 0)
             {
-                hitPoints--;
-                Console.WriteLine("Obstacle hit! Remaining hit points: " + hitPoints);
+                Stage.objectObstacleList[i].hitPoints--;
+                Console.WriteLine("Obstacle hit! Remaining hit points: " + Stage.objectObstacleList[i].hitPoints);
+            }
+            if (Stage.objectObstacleList[i].hitPoints <= 0)
+            {
+                Stage.objectObstacleList.RemoveAt(i);
             }
             else
             {
+                
                 Console.WriteLine("Obstacle has no more hit points!");
             }
         }
