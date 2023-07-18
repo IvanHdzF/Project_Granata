@@ -7,6 +7,7 @@ namespace Granata
         internal static void PlayerTurn(int playerN)
         {
             Stage.RenderGrid();
+            Stage.players[playerN].ShowInventory(playerN);
             if (Stage.players[playerN].HP<=0)
             {
                 return;
@@ -52,17 +53,26 @@ namespace Granata
                     case '1':
                     case '2':
                     case '3':
-                        int intInput=input- '0';
-                        var position=Stage.players[playerN].Position;
-                        bool playerCollision=false;
-                        int[] pos = new int[] { position[0], position[1]};
-                        //TODO: Change frame or position so that player 1 cant hit player 2 turn 1
-                        Stage.actualProjectile = new Projectile("rock", pos, input, 125, 30, 1, "⚾");
-                        for (int i = 0;i<Stage.actualProjectile.Frames;i++)
+                        int intInput=input - '0';
+                        Stage.players[playerN].ShowInventory(playerN);
+                        System.Console.Write("Select a projectile (1 rock, 2 grenade, 3 mine): ");
+                        string projType = Console.ReadLine(); //ask user which type of projectile want 1,2,3
+                        if (Stage.players[playerN].CheckProjectileAvailible(projType,playerN))
                         {
-                            Stage.players[playerN].Throw(intInput,"1",playerN);//TODO: Implement different projectile types.
-                            (intInput,playerCollision)=Player.Collision(intInput);
-                            if (playerCollision) break;
+                            var position=Stage.players[playerN].Position;
+                            bool playerCollision=false;
+                            int[] pos = new int[] { position[0], position[1]};
+                            
+                            Stage.actualProjectile = GetProjectile(projType, playerN, intInput); 
+                            for (int i = 0;i<Stage.actualProjectile.Frames;i++)
+                            {
+                                Stage.players[playerN].Throw(intInput,projType,playerN);
+                                (intInput,playerCollision)=Player.Collision(intInput);
+                                if (playerCollision) break;
+                            }
+                            Stage.players[playerN].grenadeImpact();
+                            //Player.Sound(Stage.actualProjectile.Tipo);
+                            
                         }  
                         Stage.actualProjectile=null;  
                         done = true;
@@ -72,14 +82,39 @@ namespace Granata
                         break;
                 }
             }
+        }
 
+        internal static Projectile GetProjectile(string type, int playerN, int dir)
+        {
+
+            int[] pos = {Stage.players[playerN].Position[0], Stage.players[playerN].Position[1]};
+            switch(type)
+            {
+                case "1":
+                return new Projectile("1", pos, dir, 25, 30, 0, "⚾");
+                break;
+
+                case "2":
+                return new Projectile("2", pos, dir, 75, 25, 25, "💣");
+                break;
+
+                case "3":
+                return new Projectile("3", pos, dir, 75, 25, 25, "🧨");
+                break;
+
+                default:
+                    System.Console.WriteLine("not a valid type!");
+                    return null;
+                    break;
+            }            
         }
         internal static void supplyProjectiles()
-        {
-            //TODO: Supply projectiles
+        {            
             System.Console.WriteLine("Supplying projectiles");
-            //foreach (player in playerlist)
-            //player.supply()
+            foreach (var player in Stage.players)
+            {
+                player.Refill();
+            }            
         }
         internal static void ValidateConfigInput(ref int value,int defaultValue,int maxValue)
         {
