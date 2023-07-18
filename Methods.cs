@@ -11,13 +11,14 @@ namespace Granata
             {
                 return;
             }
-            System.Console.WriteLine($"Player {playerN+1} What do you want to do? WASD to Move(Max 4 times before spending your turn)/SPACE to Throw");
+            
             bool done = false;
             int actionCount = 0;
             int maxActionCount = 4;
             //By default the player can move up to 4 times, and throw only once.
             while (!done)
-            {
+            {   
+                System.Console.WriteLine($"Player {playerN+1} What do you want to do? WASD to Move(You have {maxActionCount-actionCount} move actions left to end turn)\nNumberpad numbers to Throw");
                 char input = Console.ReadKey().KeyChar;
                 System.Console.WriteLine();
                 input=char.ToUpper(input);
@@ -51,7 +52,7 @@ namespace Granata
                         bool playerCollision=false;
                         int[] pos = new int[] { position[0], position[1]};
                         //TODO: Change frame or position so that player 1 cant hit player 2 turn 1
-                        Stage.actualProjectile = new Projectile("rock", pos, input, 250, 30, 1, "⚾");
+                        Stage.actualProjectile = new Projectile("rock", pos, input, 125, 30, 1, "⚾");
                         for (int i = 0;i<Stage.actualProjectile.Frames;i++)
                         {
                             Stage.players[playerN].Throw(intInput,"1",playerN);//TODO: Implement different projectile types.

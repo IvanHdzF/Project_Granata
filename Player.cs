@@ -43,8 +43,6 @@ namespace Granata
 
         public void Move(char direction,int playerN)
         {
-            System.Console.WriteLine(direction);
-            System.Console.WriteLine(playerN);
             //validar si choco con mina, obstaculo y eje de mapa
             switch (direction)
             {
@@ -55,7 +53,6 @@ namespace Granata
                     if (Stage.players[playerN].Position[0] > 0)
                     {
                         Stage.players[playerN].Position[0]--;
-                        System.Console.WriteLine($"{Stage.players[playerN].Position[0]}");
                     } 
                     break;
                 case 'S':
@@ -63,7 +60,6 @@ namespace Granata
                     break;
                 case 'D':
                     if (Stage.players[playerN].Position[0] < Stage.gridSize - 1) Stage.players[playerN].Position[0]++;
-                    System.Console.WriteLine($"{Stage.players[playerN].Position[0]}");
                     break;
                     // case ' ':
                     //     Console.WriteLine("Direccion");
@@ -108,7 +104,7 @@ namespace Granata
                 }
             }
 
-            int mydelay = 500;
+            int mydelay = 250;
             switch (direction)
             {
                 case 1:

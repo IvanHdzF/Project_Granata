@@ -22,6 +22,7 @@ namespace Granata
         public static int selectedNumberOfObstacle = 5;
         public static List<Obstacle> selectionOfObstacle;
         public static Projectile actualProjectile;
+        private static string matrixLine="";
 
         //Function to initialize the object obstacle
         static internal void InitializeObstacule()
@@ -108,21 +109,6 @@ namespace Granata
 
                 objectObstacleList[i].positionX2 = objectObstacleList[i].positionX1 + objectObstacleList[i].width;
                 objectObstacleList[i].positionY2 = objectObstacleList[i].positionY1 + objectObstacleList[i].height;
-                Console.WriteLine(randomNumberX + " " + randomNumberY + " " + objectObstacleList[i].positionX2 + " " + objectObstacleList[i].positionY2 );
-                foreach (var obstacle in objectObstacleList)
-                {
-                    System.Console.WriteLine($"X1:{obstacle.positionX1}   X2:{obstacle.positionX2}");
-                    System.Console.WriteLine($"Y1:{obstacle.positionY1}   Y2:{obstacle.positionY2}");
-                    System.Console.WriteLine("\n");
-                }
-                System.Console.WriteLine("_______________________________________________________");
-            }
-
-            foreach (var obstacle in objectObstacleList)
-            {
-                System.Console.WriteLine($"X1:{obstacle.positionX1}   X2:{obstacle.positionX2}");
-                System.Console.WriteLine($"Y1:{obstacle.positionY1}   Y2:{obstacle.positionY2}");
-                System.Console.WriteLine("\n");
             }
 
             
@@ -131,13 +117,14 @@ namespace Granata
         public static void RenderGrid()
         {
             Console.OutputEncoding = Encoding.UTF8;
-            //Console.Clear();
+            Console.Clear();
             System.Console.WriteLine("\n");
-            System.Console.WriteLine("1,2,3,4,5,6,7,8,9,101112131415161718192021222324252627282930");
 
 
+            matrixLine="";
             for (int y = 0; y < gridSize; y++)
             {
+                
                 for (int x = 0; x < gridSize; x++)
                 {
                     if (CheckPlayers(x, y))
@@ -152,18 +139,18 @@ namespace Granata
                     {
                         if (x == actualProjectile.ProjectilePosition[0] && y == actualProjectile.ProjectilePosition[1])
                         {
-                            Console.Write(actualProjectile.Symbol);
+                            matrixLine+=actualProjectile.Symbol;
                             continue;
                         }
                     }
 
 
-                    Console.Write("⬛");
+                    matrixLine+="⬛";
                 }
-                Console.WriteLine();
+                matrixLine+="\n";
             }
+            System.Console.WriteLine(matrixLine);
             System.Console.WriteLine("----------------------------------------------------------------------------------");
-            System.Console.WriteLine("\n\n\n\n");
             Console.WriteLine();
         }
 
@@ -173,7 +160,7 @@ namespace Granata
             {
                 if ((x == players[i].Position[0] && y == players[i].Position[1]))
                 {
-                    Console.Write(players[i].Symbol);
+                    matrixLine+=players[i].Symbol;
                     return true;
                 }
             }
@@ -191,8 +178,7 @@ namespace Granata
                     {
                         if ((y == k && x == j))
                         {
-
-                            Console.Write(Obstacle.obstacleSymbol);
+                            matrixLine+=Obstacle.obstacleSymbol;
                             return true;
                         }
                     }
