@@ -118,11 +118,15 @@ namespace Granata
             Console.OutputEncoding = Encoding.UTF8;
             Console.Clear();
             System.Console.WriteLine("\n");
+            System.Console.WriteLine("    🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳");
+
 
 
             matrixLine="";
+            string offset="    🈳";
             for (int y = 0; y < gridSize; y++)
             {
+                matrixLine+=offset;
                 
                 for (int x = 0; x < gridSize; x++)
                 {
@@ -145,11 +149,12 @@ namespace Granata
 
 
                     matrixLine+="⬛";
+
                 }
-                matrixLine+="\n";
+                matrixLine+="🈳\n";
             }
-            System.Console.WriteLine(matrixLine);
-            System.Console.WriteLine("----------------------------------------------------------------------------------");
+            System.Console.Write(matrixLine);
+            System.Console.WriteLine("    🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳🈳");
             Console.WriteLine();
             Console.CursorVisible = true;
         }
