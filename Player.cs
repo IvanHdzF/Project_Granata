@@ -88,7 +88,7 @@ namespace Granata
                     //     Console.WriteLine("Invalid move. Try again.");
                     //     break;
             }
-            Stage.RenderGrid();
+            
         }
 
         public void ShowInventory(int playerN)
