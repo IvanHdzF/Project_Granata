@@ -20,7 +20,7 @@ namespace Granata
         public int width { get; set; }
         public int height { get; set; }
         public int hitPoints { get; private set; }
-        public static string obstacleSymbol = "🈂️";
+        public static string obstacleSymbol = "🈴";
 
 
         public Obstacle(int w, int h)

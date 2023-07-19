@@ -117,12 +117,24 @@ namespace Granata
             Console.CursorVisible = false;
             Console.OutputEncoding = Encoding.UTF8;
             Console.Clear();
-            string offset="    🈳";
+            string title= "\n\n\n\n\n             🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥      🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥";
+            string title2= "             🟥         🟥      🟥 🟥      🟥         🟥     🟥             🟥";
+            string title3= "             🟥         🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥";
+            string title4= "             🟥         🟥         🟥      🟥 🟥      🟥     🟥     🟥      🟥";
+            string title5= "             🟥         🟥         🟥      🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥\n";
+            string title6= "             🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥\n";
+            Console.WriteLine(title);
+            Console.WriteLine(title2);
+            Console.WriteLine(title3);
+            Console.WriteLine(title4);
+            Console.WriteLine(title5);
+            Console.WriteLine(title6);
+            string offset="                       ➿";
             string wall="";
 
             for(int i = 0; i < gridSize + 1;i++)
             {
-                wall += "🈳";
+                wall += "➿";
             } 
 
             System.Console.WriteLine(offset+wall);
@@ -156,11 +168,12 @@ namespace Granata
                     matrixLine+="⬛";
 
                 }
-                matrixLine+="🈳\n";
+                matrixLine+="➿\n";
             }
             System.Console.Write(matrixLine);
 
             System.Console.WriteLine(offset+wall);
+            System.Console.Write("");
             Console.WriteLine();
             Console.CursorVisible = true;
         }

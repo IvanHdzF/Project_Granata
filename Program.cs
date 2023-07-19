@@ -28,7 +28,7 @@ namespace Granata
             while (!done)
             {
                 Console.OutputEncoding = Encoding.UTF8;
-                string title= "             🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥      🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥";
+                string title= "\n\n\n\n\n             🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥      🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥";
                 string title2= "             🟥         🟥      🟥 🟥      🟥         🟥     🟥             🟥";
                 string title3= "             🟥         🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥";
                 string title4= "             🟥         🟥         🟥      🟥 🟥      🟥     🟥     🟥      🟥";
