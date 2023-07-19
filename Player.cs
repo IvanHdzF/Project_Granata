@@ -327,14 +327,14 @@ namespace Granata
                     return 7; // collision wall down
                 if (dir == 2)
                     return 8; // collision wall down
-                if (dir == 3 && (Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY + 1)))
+                if (dir == 3 && (Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY + 1)) && !(Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY - 1)))
                     return 9; // collision wall down
 
                 if (dir == 7 && (Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY - 1)) && !(Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY + 1)))
                     return 1; // collision wall up
                 if (dir == 8)
                     return 2; // collision wall up
-                if (dir == 9 && (Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY - 1)))
+                if (dir == 9 && (Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY - 1)) && !(Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY + 1)))
                     return 3; // collision wall up
 
                 if (dir == 9)
