@@ -82,14 +82,17 @@ namespace Granata
         {
             if (Stage.CheckMines(Stage.players[playerN].Position[0], Stage.players[playerN].Position[1]))
             {
-                Stage.players[playerN].HP -= Stage.objectiMinesList[0].Damage;
+                Stage.players[playerN].HP -= Stage.objectMinesList[0].Damage;
                 if (Stage.players[playerN].HP <= 0) Stage.players[playerN].Position[0] = 200;//Remove the players from the field if they die
-                foreach (var mine in Stage.objectiMinesList)
+                for (int i = 0; i < Stage.objectMinesList.Count; i++)
                 {
-                    if (mine.ProjectilePosition[0] == Stage.players[playerN].Position[0] && mine.ProjectilePosition[1] == Stage.players[playerN].Position[1])
-                        Stage.objectiMinesList.Remove(mine);
+                    if (Stage.objectMinesList[i].ProjectilePosition[0] == Stage.players[playerN].Position[0] && Stage.objectMinesList[i].ProjectilePosition[1] == Stage.players[playerN].Position[1])
+                    {
+                        Stage.objectMinesList.RemoveAt(i);
                         Sound("Bum.wav");
                         return;
+                    }
+
                 }
             }
 
@@ -197,8 +200,8 @@ namespace Granata
         public bool plantMine(int[] pos)
         {
             if (Stage.actualProjectile.Tipo == "1" || Stage.actualProjectile.Tipo == "2")
-                return false;            
-            Stage.objectiMinesList.Add(Stage.actualProjectile);
+                return false;
+            Stage.objectMinesList.Add(Stage.actualProjectile);
             //prob mal
             return true;
         }
