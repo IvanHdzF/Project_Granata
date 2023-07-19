@@ -210,6 +210,26 @@ namespace Granata
             }
             return false;
         }
+        public static int ObstacleCollision(int x, int y)
+        {
+ 
+            for (int i = 0; i < objectObstacleList.Count; i++)
+            {   
+                for (int k = objectObstacleList[i].positionY1; k < objectObstacleList[i].positionY2 + 1; k++)
+                {
+                    for (int j = objectObstacleList[i].positionX1; j < objectObstacleList[i].positionX2 + 1; j++)
+                    {
+                        if ((y == k && x == j))
+                        {
+                            matrixLine+=Obstacle.obstacleSymbol;
+                            return (i);
+                        }
+                    }
+                }
+            }
+            return 300;
+        }
+
 
     }
 }
