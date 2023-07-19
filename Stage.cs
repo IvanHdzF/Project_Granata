@@ -188,6 +188,7 @@ namespace Granata
         {
             for (int i = 0; i < players.Count; i++)
             {
+                
                 if ((x == players[i].Position[0] && y == players[i].Position[1]))
                 {
                     matrixLine+=players[i].Symbol;

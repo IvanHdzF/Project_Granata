@@ -83,6 +83,7 @@ namespace Granata
             if (Stage.CheckMines(Stage.players[playerN].Position[0], Stage.players[playerN].Position[1]))
             {
                 Stage.players[playerN].HP -= Stage.objectiMinesList[0].Damage;
+                if (Stage.players[playerN].HP <= 0) Stage.players[playerN].Position[0] = 200;//Remove the players from the field if they die
                 foreach (var mine in Stage.objectiMinesList)
                 {
                     if (mine.ProjectilePosition[0] == Stage.players[playerN].Position[0] && mine.ProjectilePosition[1] == Stage.players[playerN].Position[1])
@@ -221,6 +222,7 @@ namespace Granata
                         else if (player.Position[0] == x && player.Position[1] == y)
                         {
                             player.HP -= Stage.actualProjectile.SplashDamage;
+                            if (player.HP <= 0) player.Position[0] = 200;//Remove the players from the field if they die
                             return true;
                         }
                     }
