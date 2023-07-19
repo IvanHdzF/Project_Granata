@@ -1,0 +1,4 @@
+maxTurnCount = 30
+playerCount = 4
+supplyCooldown = 10
+stageSize = 30

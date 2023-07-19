@@ -7,21 +7,24 @@ namespace Granata
     public class Stage
     {
         /***** INITIAL VARIABLES *****/
+        
         // MAgic Numbers
         //TODO: Number of generated objects is wrong
-        public static int MIN_NUMBER_OF_OBSTACLE = 8;
-        public static int MAX_NUMBER_OF_OBSTACLE = 12;
+        public static int MIN_NUMBER_OF_OBSTACLE = 10;
+        public static int MAX_NUMBER_OF_OBSTACLE = 14;
 
         // Grid size
         public static int gridSize = 30;
 
         // Call and define variables
+        public static List<Projectile> objectiMinesList = new List<Projectile>();
         public static List<Obstacle> objectObstacleList = new List<Obstacle>();
         public static List<Player> players = new List<Player>();
 
         public static int selectedNumberOfObstacle = 5;
         public static List<Obstacle> selectionOfObstacle;
         public static Projectile actualProjectile;
+        private static string matrixLine="";
 
         //Function to initialize the object obstacle
         static internal void InitializeObstacule()
@@ -33,33 +36,40 @@ namespace Granata
 
         static internal void InitializePlayer(int numberOfPlayer)
         {
-            string[] playerSymbols = { "🤡", "👺" };//TODO: Implement for more players
-            int[] positions = { 1, 1, gridSize - 2, gridSize - 2 };
+            string[] playerSymbols = { "🤡", "👺", "🐒", "👽" };//TODO: Implement for more players
+            int[] positions = {
+            1, 1, //Position for player 1
+            gridSize - 2, gridSize - 2, //Position for player 2
+            1, gridSize - 2, //Position for player 3
+            gridSize - 2, 1, //Position for player 4
+            };
 
             for (int i = 0; i < numberOfPlayer; i++)
             {
                 var dict = new Dictionary<string, int>(){
-                {"rock",60}
+                {"1",10}, //rock
+                {"2",20}, //grenade
+                {"3",2} //mine
             };
                 int[] position = { positions[i* 2] , positions[i* 2+1]  };
 
-                players.Add(new Player(playerSymbols[i], 250, $"Player {i + 1}", 0, position, dict));
+                players.Add(new Player(playerSymbols[i], 255, $"Player {i + 1}", 0, position, dict));
             }
         }
 
         // Function to get obstacles
         public static void SetListObstacle()
         {
-            Random selectObstacle = new Random();
             Random selectNumberOfObstacle = new Random();
 
             selectedNumberOfObstacle = selectNumberOfObstacle.Next(MIN_NUMBER_OF_OBSTACLE, MAX_NUMBER_OF_OBSTACLE);
+            
+            Console.WriteLine(selectedNumberOfObstacle);
 
             for (int i = 0; i < selectedNumberOfObstacle; i++)
             {
-                objectObstacleList.Add(selectionOfObstacle[selectObstacle.Next(10)]);
+                objectObstacleList.Add(selectionOfObstacle[i]);
             }
-            RandomSetPosition();
         }
 
         public static void RandomSetPosition()
@@ -106,49 +116,96 @@ namespace Granata
 
         public static void RenderGrid()
         {
+            Console.CursorVisible = false;
             Console.OutputEncoding = Encoding.UTF8;
-            //Console.Clear();
-            System.Console.WriteLine("\n");
+            Console.Clear();
+            string title= "\n\n\n\n\n             🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥      🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥";
+            string title2= "             🟥         🟥      🟥 🟥      🟥         🟥     🟥             🟥";
+            string title3= "             🟥         🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥";
+            string title4= "             🟥         🟥         🟥      🟥 🟥      🟥     🟥     🟥      🟥";
+            string title5= "             🟥         🟥         🟥      🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥\n";
+            string title6= "             🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥\n";
+            Console.WriteLine(title);
+            Console.WriteLine(title2);
+            Console.WriteLine(title3);
+            Console.WriteLine(title4);
+            Console.WriteLine(title5);
+            Console.WriteLine(title6);
+            string offset="                       ➿";
+            string wall="";
 
+            for(int i = 0; i < gridSize + 1;i++)
+            {
+                wall += "➿";
+            } 
+
+            System.Console.WriteLine(offset+wall);
+
+            matrixLine="";
+            
             for (int y = 0; y < gridSize; y++)
             {
+                matrixLine+=offset;
+                
                 for (int x = 0; x < gridSize; x++)
                 {
                     if (CheckPlayers(x, y))
                     {
                         continue;
                     }
+                    else if (CheckMines(x, y))
+                    {
+                        continue;
+                    }
                     else if (CheckObstacles(x, y))
                     {
-                        
                         continue;
                     }
                     else if (actualProjectile != null)
                     {
                         if (x == actualProjectile.ProjectilePosition[0] && y == actualProjectile.ProjectilePosition[1])
                         {
-                            Console.Write(actualProjectile.Symbol);
+                            matrixLine+=actualProjectile.Symbol;
                             continue;
                         }
                     }
 
-                    
-                    Console.Write("⬛");
+
+                    matrixLine+="⬛";
+
                 }
-                Console.WriteLine();
+                matrixLine+="➿\n";
             }
-            System.Console.WriteLine("----------------------------------------------------------------------------------");
-            System.Console.WriteLine("\n\n\n\n");
+            System.Console.Write(matrixLine);
+
+            System.Console.WriteLine(offset+wall);
+            System.Console.Write("");
             Console.WriteLine();
+            Console.CursorVisible = true;
         }
 
         public static bool CheckPlayers(int x, int y)
         {
             for (int i = 0; i < players.Count; i++)
             {
+                
                 if ((x == players[i].Position[0] && y == players[i].Position[1]))
                 {
-                    Console.Write(players[i].Symbol);
+                    matrixLine+=players[i].Symbol;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        
+        public static bool CheckMines(int x, int y)
+        {
+            for (int i = 0; i < objectiMinesList.Count; i++)
+            {
+                if ((x == objectiMinesList[i].ProjectilePosition[0] && y == objectiMinesList[i].ProjectilePosition[1]))
+                {
+                    matrixLine+=objectiMinesList[i].Symbol;
                     return true;
                 }
             }
@@ -157,15 +214,16 @@ namespace Granata
 
         public static bool CheckObstacles(int x, int y)
         {
-            for (int i = 0; i < selectedNumberOfObstacle; i++)
-            {
-                for (int j = objectObstacleList[i].positionX1; j < objectObstacleList[i].positionX2; j++)
+ 
+            for (int i = 0; i < objectObstacleList.Count; i++)
+            {   
+                for (int k = objectObstacleList[i].positionY1; k < objectObstacleList[i].positionY2 + 1; k++)
                 {
-                    for (int k = objectObstacleList[i].positionY1; k < objectObstacleList[i].positionY2; k++)
+                    for (int j = objectObstacleList[i].positionX1; j < objectObstacleList[i].positionX2 + 1; j++)
                     {
-                        if ((x == j && y == k))
+                        if ((y == k && x == j))
                         {
-                            Console.Write(Obstacle.obstacleSymbol);
+                            matrixLine+=Obstacle.obstacleSymbol;
                             return true;
                         }
                     }
@@ -173,6 +231,26 @@ namespace Granata
             }
             return false;
         }
+        public static int ObstacleCollision(int x, int y)
+        {
+ 
+            for (int i = 0; i < objectObstacleList.Count; i++)
+            {   
+                for (int k = objectObstacleList[i].positionY1; k < objectObstacleList[i].positionY2 + 1; k++)
+                {
+                    for (int j = objectObstacleList[i].positionX1; j < objectObstacleList[i].positionX2 + 1; j++)
+                    {
+                        if ((y == k && x == j))
+                        {
+                            matrixLine+=Obstacle.obstacleSymbol;
+                            return (i);
+                        }
+                    }
+                }
+            }
+            return 300;
+        }
+
 
     }
 }
