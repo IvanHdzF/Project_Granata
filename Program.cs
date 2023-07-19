@@ -27,25 +27,27 @@ namespace Granata
             bool done = false;
             while (!done)
             {
-                Console.OutputEncoding = Encoding.UTF8;
-                string title= "\n\n\n\n\n             🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥      🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥";
-                string title2= "             🟥         🟥      🟥 🟥      🟥         🟥     🟥             🟥";
-                string title3= "             🟥         🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥";
-                string title4= "             🟥         🟥         🟥      🟥 🟥      🟥     🟥     🟥      🟥";
-                string title5= "             🟥         🟥         🟥      🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥\n";
-                Console.WriteLine(title);
-                Console.WriteLine(title2);
-                Console.WriteLine(title3);
-                Console.WriteLine(title4);
-                Console.WriteLine(title5);
+                // Console.OutputEncoding = Encoding.UTF8;
+                // string title= "\n\n\n\n\n             🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥      🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥";
+                // string title2= "             🟥         🟥      🟥 🟥      🟥         🟥     🟥             🟥";
+                // string title3= "             🟥         🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥";
+                // string title4= "             🟥         🟥         🟥      🟥 🟥      🟥     🟥     🟥      🟥";
+                // string title5= "             🟥         🟥         🟥      🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥\n";
+                // Console.WriteLine(title);
+                // Console.WriteLine(title2);
+                // Console.WriteLine(title3);
+                // Console.WriteLine(title4);
+                // Console.WriteLine(title5);
 
-                Console.WriteLine("          🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
-                Console.WriteLine("          🟥  Press ENTER ↩️  to start game, 🅰️  for configuration, 🅱️  for quit   🟥");
-                Console.WriteLine("          🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
-                string input = Console.ReadLine().ToUpper();
+                // Console.WriteLine("          🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
+                // Console.WriteLine("          🟥  Press ENTER ↩️  to start game, 🅰️  for configuration, 🅱️  for quit   🟥");
+                // Console.WriteLine("          🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
+                string input = Methods.IntroSound().ToUpper();
                 switch (input)
                 {
-                    case "":
+                    
+                    case "\r":
+
                         Game();
                         break;
                     case "A":

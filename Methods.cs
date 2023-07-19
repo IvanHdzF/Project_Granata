@@ -1,9 +1,69 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.IO;
+using System.Media;
+using NAudio.Wave;
 
 namespace Granata
 {
     class Methods
     {
+        public static string IntroSound()
+        {
+            // Ruta al archivo de audio
+            //string[] audios = { "Bonk.wav", "Bum.wav", "Bum.wav" };
+            string audioFilePath = "intro.wav";
+
+            // Crea un objeto WaveOut para la reproducción de audio
+            using (var waveOut = new WaveOutEvent())
+            {
+                // Crea un objeto WaveFileReader para leer el archivo de audio
+                using (var audioFileReader = new WaveFileReader(audioFilePath))
+                {
+                    char iniciar = '?';
+                    // Asigna el objeto WaveFileReader al WaveOut
+                    waveOut.Init(audioFileReader);
+
+                    // Reproduce el audio
+                    waveOut.Play();
+
+                    Console.OutputEncoding = Encoding.UTF8;
+                    string title= "\n\n\n\n\n             🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥      🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥";
+                    string title2= "             🟥         🟥      🟥 🟥      🟥         🟥     🟥             🟥";
+                    string title3= "             🟥         🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥";
+                    string title4= "             🟥         🟥         🟥      🟥 🟥      🟥     🟥     🟥      🟥";
+                    string title5= "             🟥         🟥         🟥      🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥\n";
+                    System.Threading.Thread.Sleep(2000);
+                    Console.WriteLine(title);
+                    System.Threading.Thread.Sleep(1600);
+                    Console.WriteLine(title2);
+                    System.Threading.Thread.Sleep(1600);
+                    Console.WriteLine(title3);
+                    System.Threading.Thread.Sleep(1600);
+                    Console.WriteLine(title4);
+                    System.Threading.Thread.Sleep(1600);
+                    Console.WriteLine(title5);
+                    System.Threading.Thread.Sleep(1500);
+
+                    Console.WriteLine("          🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
+                    Console.WriteLine("          🟥  Press ENTER ↩️  to start game, 🅰️  for configuration, 🅱️  for quit   🟥");
+                    Console.WriteLine("          🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
+
+                    // Espera a que se termine la reproducción
+                    while (waveOut.PlaybackState == PlaybackState.Playing && iniciar =='?')
+                    {
+                        iniciar = Console.ReadKey().KeyChar;
+                        System.Threading.Thread.Sleep(500);
+                        return iniciar.ToString();
+                    }
+
+                    return "";
+                }
+            }
+        }
         internal static void PlayerTurn(int playerN)
         {
             Stage.RenderGrid();
@@ -18,9 +78,15 @@ namespace Granata
             //By default the player can move up to 4 times, and throw only once.
             while (!done)
             {   
-                Console.WriteLine("   🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
-                System.Console.Write($"   🟥Player {playerN+1} What do you want to do? WASD to Move You have {maxActionCount-actionCount} move actions left to end turn🟥\n   🟥Numberpad numbers to Throw............................................................🟥\n");
-                Console.WriteLine("   🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
+                string offset_title= " ";
+                for (int i = 0; i < Stage.gridSize - 23; i ++)
+                {
+                    offset_title+= " ";
+
+                }   
+                Console.WriteLine(offset_title+"🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
+                System.Console.Write($"{offset_title}🟥Player {playerN+1} What do you want to do? WASD to Move You have {maxActionCount-actionCount} move actions left to end turn 🟥\n{offset_title}🟥Numberpad numbers to Throw..............................................................🟥\n");
+                Console.WriteLine(offset_title+"🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
                 System.Console.WriteLine("\n");
                 char input = Console.ReadKey().KeyChar;
                 System.Console.WriteLine();

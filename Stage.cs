@@ -119,18 +119,18 @@ namespace Granata
             Console.CursorVisible = false;
             Console.OutputEncoding = Encoding.UTF8;
             Console.Clear();
-            string title= "\n\n\n\n\n             🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥      🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥";
-            string title2= "             🟥         🟥      🟥 🟥      🟥         🟥     🟥             🟥";
-            string title3= "             🟥         🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥";
-            string title4= "             🟥         🟥         🟥      🟥 🟥      🟥     🟥     🟥      🟥";
-            string title5= "             🟥         🟥         🟥      🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥\n";
-            string title6= "             🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥\n";
-            Console.WriteLine(title);
-            Console.WriteLine(title2);
-            Console.WriteLine(title3);
-            Console.WriteLine(title4);
-            Console.WriteLine(title5);
-            Console.WriteLine(title6);
+            string offset_title= " ";
+            for (int i = 0; i < gridSize - 12; i ++)
+            {
+                offset_title+= " ";
+
+            }    
+            string title4= "                       🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥";
+            string title5= "                       🟥        граната       🟥";
+            string title6= "                       🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥\n";
+            Console.WriteLine(offset_title + title4);
+            Console.WriteLine(offset_title + title5);
+            Console.WriteLine(offset_title + title6);
             string offset="                       ➿";
             string wall="";
 
