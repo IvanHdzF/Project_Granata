@@ -7,17 +7,17 @@ namespace Granata
         internal static void PlayerTurn(int playerN)
         {
             Stage.RenderGrid();
-            if (Stage.players[playerN].HP <= 0)
-            {
-                return;
-            }
-
             bool done = false;
             int actionCount = 0;
             int maxActionCount = 10;
             //By default the player can move up to 4 times, and throw only once.
             while (!done)
             {   
+                if (Stage.players[playerN].HP <= 0)
+                {
+                    return;
+                }
+                 Stage.players[playerN].ShowInventory(playerN);
                 Console.WriteLine("   🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
                 System.Console.Write($"   🟥Player {playerN+1} What do you want to do? WASD to Move You have {maxActionCount-actionCount} move actions left to end turn🟥\n   🟥Numberpad numbers to Throw............................................................🟥\n");
                 Console.WriteLine("   🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
@@ -52,7 +52,6 @@ namespace Granata
                     case '2':
                     case '3':
                         int intInput = input - '0';
-                        Stage.players[playerN].ShowInventory(playerN);
                         System.Console.Write("Select a projectile (1 rock, 2 grenade, 3 mine): ");
 
                         string projType = StringIntInput(1, 3);
