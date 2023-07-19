@@ -36,7 +36,7 @@ namespace Granata
             //selectionOfObstacle.Add(this);
         }
 
-        public static async void HitObstacle(int i)
+        public static void HitObstacle(int i)
         {   
             
             if (Stage.objectObstacleList[i].hitPoints > 0)

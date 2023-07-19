@@ -100,15 +100,12 @@ namespace Granata
             {
                 case "1":
                     return new Projectile("1", pos, dir, 25, 30, 0, "⚾");
-                    break;
 
                 case "2":
                     return new Projectile("2", pos, dir, 75, 25, 25, "💣");
-                    break;
 
                 case "3":
                     return new Projectile("3", pos, dir, 100, 25, 25, "🧨");
-                    break;
 
                 default:
                     System.Console.WriteLine("Not a valid type!");
