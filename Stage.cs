@@ -17,7 +17,7 @@ namespace Granata
         public static int gridSize = 30;
 
         // Call and define variables
-        public static List<Projectile> objectiMinesList = new List<Projectile>();
+        public static List<Projectile> objectMinesList = new List<Projectile>();
         public static List<Obstacle> objectObstacleList = new List<Obstacle>();
         public static List<Player> players = new List<Player>();
 
@@ -188,6 +188,7 @@ namespace Granata
         {
             for (int i = 0; i < players.Count; i++)
             {
+                
                 if ((x == players[i].Position[0] && y == players[i].Position[1]))
                 {
                     matrixLine+=players[i].Symbol;
@@ -200,11 +201,11 @@ namespace Granata
         
         public static bool CheckMines(int x, int y)
         {
-            for (int i = 0; i < objectiMinesList.Count; i++)
+            for (int i = 0; i < objectMinesList.Count; i++)
             {
-                if ((x == objectiMinesList[i].ProjectilePosition[0] && y == objectiMinesList[i].ProjectilePosition[1]))
+                if ((x == objectMinesList[i].ProjectilePosition[0] && y == objectMinesList[i].ProjectilePosition[1]))
                 {
-                    matrixLine+=objectiMinesList[i].Symbol;
+                    matrixLine+=objectMinesList[i].Symbol;
                     return true;
                 }
             }

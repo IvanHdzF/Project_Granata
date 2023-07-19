@@ -82,13 +82,17 @@ namespace Granata
         {
             if (Stage.CheckMines(Stage.players[playerN].Position[0], Stage.players[playerN].Position[1]))
             {
-                Stage.players[playerN].HP -= Stage.objectiMinesList[0].Damage;
-                foreach (var mine in Stage.objectiMinesList)
+                Stage.players[playerN].HP -= Stage.objectMinesList[0].Damage;
+                if (Stage.players[playerN].HP <= 0) Stage.players[playerN].Position[0] = 200;//Remove the players from the field if they die
+                for (int i = 0; i < Stage.objectMinesList.Count; i++)
                 {
-                    if (mine.ProjectilePosition[0] == Stage.players[playerN].Position[0] && mine.ProjectilePosition[1] == Stage.players[playerN].Position[1])
-                        Stage.objectiMinesList.Remove(mine);
+                    if (Stage.objectMinesList[i].ProjectilePosition[0] == Stage.players[playerN].Position[0] && Stage.objectMinesList[i].ProjectilePosition[1] == Stage.players[playerN].Position[1])
+                    {
+                        Stage.objectMinesList.RemoveAt(i);
                         Sound("Bum.wav");
                         return;
+                    }
+
                 }
             }
 
@@ -196,8 +200,8 @@ namespace Granata
         public bool plantMine(int[] pos)
         {
             if (Stage.actualProjectile.Tipo == "1" || Stage.actualProjectile.Tipo == "2")
-                return false;            
-            Stage.objectiMinesList.Add(Stage.actualProjectile);
+                return false;
+            Stage.objectMinesList.Add(Stage.actualProjectile);
             //prob mal
             return true;
         }
@@ -221,6 +225,7 @@ namespace Granata
                         else if (player.Position[0] == x && player.Position[1] == y)
                         {
                             player.HP -= Stage.actualProjectile.SplashDamage;
+                            if (player.HP <= 0) player.Position[0] = 200;//Remove the players from the field if they die
                             return true;
                         }
                     }
@@ -325,14 +330,14 @@ namespace Granata
                     return 7; // collision wall down
                 if (dir == 2)
                     return 8; // collision wall down
-                if (dir == 3 && (Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY + 1)))
+                if (dir == 3 && (Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY + 1)) && !(Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY - 1)))
                     return 9; // collision wall down
 
                 if (dir == 7 && (Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY - 1)) && !(Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY + 1)))
                     return 1; // collision wall up
                 if (dir == 8)
                     return 2; // collision wall up
-                if (dir == 9 && (Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY - 1)))
+                if (dir == 9 && (Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY - 1)) && !(Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY + 1)))
                     return 3; // collision wall up
 
                 if (dir == 9)

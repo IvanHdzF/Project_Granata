@@ -67,17 +67,17 @@ namespace Granata
         internal static void PlayerTurn(int playerN)
         {
             Stage.RenderGrid();
-            if (Stage.players[playerN].HP <= 0)
-            {
-                return;
-            }
-
             bool done = false;
             int actionCount = 0;
             int maxActionCount = 10;
             //By default the player can move up to 4 times, and throw only once.
             while (!done)
             {   
+                if (Stage.players[playerN].HP <= 0)
+                {
+                    return;
+                }
+                 Stage.players[playerN].ShowInventory(playerN);
                 string offset_title= " ";
                 for (int i = 0; i < Stage.gridSize - 23; i ++)
                 {
@@ -118,7 +118,6 @@ namespace Granata
                     case '2':
                     case '3':
                         int intInput = input - '0';
-                        Stage.players[playerN].ShowInventory(playerN);
                         System.Console.Write("Select a projectile (1 rock, 2 grenade, 3 mine): ");
 
                         string projType = StringIntInput(1, 3);
@@ -166,15 +165,12 @@ namespace Granata
             {
                 case "1":
                     return new Projectile("1", pos, dir, 25, 30, 0, "⚾");
-                    break;
 
                 case "2":
                     return new Projectile("2", pos, dir, 75, 25, 25, "💣");
-                    break;
 
                 case "3":
                     return new Projectile("3", pos, dir, 100, 25, 25, "🧨");
-                    break;
 
                 default:
                     System.Console.WriteLine("Not a valid type!");
