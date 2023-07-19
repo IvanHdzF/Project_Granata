@@ -43,7 +43,11 @@ namespace Granata
                     {
                         return;
                     }
-                    if (Stage.players[playerN].Position[1] > 0) Stage.players[playerN].Position[1]--;
+                    if (Stage.players[playerN].Position[1] > 0)
+                    {
+                        Stage.players[playerN].Position[1]--;
+                    }
+
                     break;
                 case 'A':
                     if (Stage.CheckObstacles(Stage.players[playerN].Position[0] - 1, Stage.players[playerN].Position[1]))
@@ -69,26 +73,25 @@ namespace Granata
                     }
                     if (Stage.players[playerN].Position[0] < Stage.gridSize - 1) Stage.players[playerN].Position[0]++;
                     break;
-                    // case ' ':
-                    //     Console.WriteLine("Direccion");
-                    //     int dir = int.Parse(Console.ReadLine());
-                    //     Console.WriteLine("Tipo de Proyectil");
-                    //     int type = int.Parse(Console.ReadLine());
-
-                    //     for (int i = 0; i < actualProjectile.Frames; i++)
-                    //     {
-                    //         int mydelay = 500;
-                    //         Throw(dir, type);
-                    //         dir = collision(dir);
-                    //         //System.Console.WriteLine($"ubicacion proyectil en X:{Stage.actualProjectile.ProjectilePosition[0]}  Y:{Stage.actualProjectile.ProjectilePosition[1]}");
-                    //         Thread.Sleep(mydelay);
-                    //     }
-                    //     break;
-                    // default:
-                    //     Console.WriteLine("Invalid move. Try again.");
-                    //     break;
             }
-            
+            collitionMine(playerN);
+            Stage.RenderGrid();
+        }
+
+        public void collitionMine(int playerN)
+        {
+            if (Stage.CheckMines(Stage.players[playerN].Position[0], Stage.players[playerN].Position[1]))
+            {
+                Stage.players[playerN].HP -= Stage.objectiMinesList[0].Damage;
+                foreach (var mine in Stage.objectiMinesList)
+                {
+                    if (mine.ProjectilePosition[0] == Stage.players[playerN].Position[0] && mine.ProjectilePosition[1] == Stage.players[playerN].Position[1])
+                        Stage.objectiMinesList.Remove(mine);
+                        Sound("Bum.wav");
+                        return;
+                }
+            }
+
         }
 
         public void ShowInventory(int playerN)
@@ -100,7 +103,6 @@ namespace Granata
                 System.Console.WriteLine($"{Stage.players[playerN].Symbol} has {types[int.Parse(key) - 1]}: {Stage.players[playerN].Projectiles[key]} ");
             }
         }
-
 
         public bool CheckProjectileAvailible(string type, int playerN)
         {
@@ -191,8 +193,18 @@ namespace Granata
             Projectiles["3"] = 2;
         }
 
+        public bool plantMine(int[] pos)
+        {
+            if (Stage.actualProjectile.Tipo == "1" || Stage.actualProjectile.Tipo == "2")
+                return false;            
+            Stage.objectiMinesList.Add(Stage.actualProjectile);
+            //prob mal
+            return true;
+        }
         public bool grenadeImpact()
         {
+            if (Stage.actualProjectile.Tipo == "1" || Stage.actualProjectile.Tipo == "3")
+                return false;
             int projX = Stage.actualProjectile.ProjectilePosition[0];
             int projY = Stage.actualProjectile.ProjectilePosition[1];
 
@@ -214,8 +226,8 @@ namespace Granata
                     }
                 }
             }
-            return false; //not found
-                          //returns 1 for direct hit and 2 for splash damage
+            return true; //not found
+                         //returns 1 for direct hit and 2 for splash damage
         }
 
         public static (int, bool) Collision(int dir)
@@ -234,8 +246,8 @@ namespace Granata
                     if (player.HP <= 0) player.Position[0] = 200;
 
 
-
-                    Sound(Stage.actualProjectile.Tipo);
+                    string[] audios = { "Bonk.wav", "Bum.wav", "Bum.wav" };
+                    Sound(audios[int.Parse(Stage.actualProjectile.Tipo) - 1]);
                     return (dir, playerCollision);
 
                 }
@@ -252,6 +264,7 @@ namespace Granata
 
             if (Stage.actualProjectile.ProjectilePosition[0] < 1)
             {
+                Console.Beep();
                 if (Stage.actualProjectile.ProjectilePosition[1] < 1 && dir == 7)
                     return 3; // upper left corner
                 if (Stage.actualProjectile.ProjectilePosition[1] > Stage.gridSize - 2 && dir == 1)
@@ -265,6 +278,7 @@ namespace Granata
             }
             else if (Stage.actualProjectile.ProjectilePosition[0] > Stage.gridSize - 2)
             {
+                Console.Beep();
                 if (Stage.actualProjectile.ProjectilePosition[1] < 1 && dir == 9)
                     return 1; // upper right corner
                 if (Stage.actualProjectile.ProjectilePosition[1] > Stage.gridSize - 2 && dir == 3)
@@ -279,6 +293,7 @@ namespace Granata
 
             if (Stage.actualProjectile.ProjectilePosition[1] < 1)
             {
+                Console.Beep();
                 if (dir == 7)
                     return 1; // collision wall up
                 if (dir == 8)
@@ -288,6 +303,7 @@ namespace Granata
             }
             else if (Stage.actualProjectile.ProjectilePosition[1] > Stage.gridSize - 2)
             {
+                Console.Beep();
                 if (dir == 1)
                     return 7; // collision wall down
                 if (dir == 2)
@@ -304,6 +320,7 @@ namespace Granata
             {
                 int index = Stage.ObstacleCollision(NextCoordenateProyectileX, NextCoordenateProyectileY);
                 Obstacle.HitObstacle(index);
+                Console.Beep();
                 if (dir == 1 && (Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY + 1)) && !(Stage.CheckObstacles(NextCoordenateProyectileX, NextCoordenateProyectileY - 1)))
                     return 7; // collision wall down
                 if (dir == 2)
@@ -379,11 +396,11 @@ namespace Granata
             }
             return (NextCoordenateX, NextCoordenateY);
         }
-        public static void Sound(string projType)
+        public static void Sound(string FileName)
         {
             // Ruta al archivo de audio
-            string[] audios = { "Bonk.wav", "Bum.wav", "Bum.wav" };
-            string audioFilePath = audios[int.Parse(projType) - 1];
+            //string[] audios = { "Bonk.wav", "Bum.wav", "Bum.wav" };
+            string audioFilePath = FileName;
 
             // Crea un objeto WaveOut para la reproducción de audio
             using (var waveOut = new WaveOutEvent())

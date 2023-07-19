@@ -7,6 +7,7 @@ namespace Granata
     public class Stage
     {
         /***** INITIAL VARIABLES *****/
+        
         // MAgic Numbers
         //TODO: Number of generated objects is wrong
         public static int MIN_NUMBER_OF_OBSTACLE = 10;
@@ -16,6 +17,7 @@ namespace Granata
         public static int gridSize = 30;
 
         // Call and define variables
+        public static List<Projectile> objectiMinesList = new List<Projectile>();
         public static List<Obstacle> objectObstacleList = new List<Obstacle>();
         public static List<Player> players = new List<Player>();
 
@@ -151,6 +153,10 @@ namespace Granata
                     {
                         continue;
                     }
+                    else if (CheckMines(x, y))
+                    {
+                        continue;
+                    }
                     else if (CheckObstacles(x, y))
                     {
                         continue;
@@ -185,6 +191,20 @@ namespace Granata
                 if ((x == players[i].Position[0] && y == players[i].Position[1]))
                 {
                     matrixLine+=players[i].Symbol;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        
+        public static bool CheckMines(int x, int y)
+        {
+            for (int i = 0; i < objectiMinesList.Count; i++)
+            {
+                if ((x == objectiMinesList[i].ProjectilePosition[0] && y == objectiMinesList[i].ProjectilePosition[1]))
+                {
+                    matrixLine+=objectiMinesList[i].Symbol;
                     return true;
                 }
             }

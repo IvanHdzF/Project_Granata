@@ -195,6 +195,7 @@ namespace Granata
             if (aliveCount == 1)
             {
                 System.Console.WriteLine($"{alive} won!");
+                Player.Sound("Victory.wav");
                 return true;
             }
             return false;

@@ -14,7 +14,7 @@ namespace Granata
 
             bool done = false;
             int actionCount = 0;
-            int maxActionCount = 4;
+            int maxActionCount = 10;
             //By default the player can move up to 4 times, and throw only once.
             while (!done)
             {   
@@ -54,22 +54,34 @@ namespace Granata
                         int intInput = input - '0';
                         Stage.players[playerN].ShowInventory(playerN);
                         System.Console.Write("Select a projectile (1 rock, 2 grenade, 3 mine): ");
-                        string projType = Console.ReadLine(); //ask user which type of projectile want 1,2,3
+
+                        string projType = StringIntInput(1, 3);
+                        Player.Sound("Ok.wav");
                         if (Stage.players[playerN].CheckProjectileAvailible(projType, playerN))
                         {
                             var position = Stage.players[playerN].Position;
                             bool playerCollision = false;
                             int[] pos = new int[] { position[0], position[1] };
-
-                            Stage.actualProjectile = GetProjectile(projType, playerN, intInput);
+                            int[] posProj = { Stage.players[playerN].Position[0], Stage.players[playerN].Position[1] };
+                            Stage.actualProjectile = GetProjectile(projType, posProj, intInput);
                             for (int i = 0; i < Stage.actualProjectile.Frames; i++)
                             {
                                 Stage.players[playerN].Throw(intInput, projType, playerN);
                                 (intInput, playerCollision) = Player.Collision(intInput);
                                 if (playerCollision) break;
                             }
-                            Stage.players[playerN].grenadeImpact();
-                            //Player.Sound(Stage.actualProjectile.Tipo);
+
+                            if (!playerCollision && Stage.players[playerN].grenadeImpact())
+                                Player.Sound("Bum.wav");
+                            int[] posMines = {Stage.actualProjectile.ProjectilePosition[0], Stage.actualProjectile.ProjectilePosition[1]};
+                            if (!playerCollision && Stage.players[playerN].plantMine(posMines))
+                            {
+                                Player.Sound("Planted.wav");
+                                System.Console.WriteLine("MINA");
+                            }
+                                
+                                //Player.Sound("Bum.wav");
+                            
 
                         }
                         Stage.actualProjectile = null;
@@ -82,20 +94,21 @@ namespace Granata
             }
         }
 
-        internal static Projectile GetProjectile(string type, int playerN, int dir)
-        {
-
-            int[] pos = { Stage.players[playerN].Position[0], Stage.players[playerN].Position[1] };
+        public static Projectile GetProjectile(string type,int[] pos, int dir)
+        {            
             switch (type)
             {
                 case "1":
                     return new Projectile("1", pos, dir, 25, 30, 0, "⚾");
+                    break;
 
                 case "2":
                     return new Projectile("2", pos, dir, 75, 25, 25, "💣");
+                    break;
 
                 case "3":
-                    return new Projectile("3", pos, dir, 75, 25, 25, "🧨");
+                    return new Projectile("3", pos, dir, 100, 25, 25, "🧨");
+                    break;
 
                 default:
                     System.Console.WriteLine("Not a valid type!");
@@ -132,6 +145,25 @@ namespace Granata
                     done = false;
                     System.Console.WriteLine($"Max value is {maxValue}!");
                 }
+            }
+        }
+
+
+        internal static string StringIntInput(int minValue, int maxValue)
+        {
+            //validates that input int string eg "2" is within values of minValue and maxValue            
+            while (true)
+            {
+                var input = Console.ReadLine();
+                if (int.TryParse(input, out int result) && result >= minValue && result <= maxValue)
+                {
+                    return input;
+                }
+                else
+                {
+                    System.Console.WriteLine($"Select a value between {minValue} and {maxValue}");
+                }
+
             }
         }
     }
