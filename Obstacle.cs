@@ -8,7 +8,7 @@ namespace Granata
     {
         private static int lastId = 0;
         private const int MinObstacleSize = 2;
-        private const int MaxObstacleSize = 3;
+        public static int MaxObstacleSize = 3;
 
         private static Random random = new Random();
 

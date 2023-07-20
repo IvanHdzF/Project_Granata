@@ -11,13 +11,14 @@ namespace Granata
         static int maxTurnCount { get; set; }
         static int playerCount { get; set; }
         static int supplyCooldown { get; set; }
-        static int stageSize { get; set; }
+        public static int stageSize { get; set; }
 
         //Max values for config parameters:
         static int maxTurnCountMax = 60;
         static int playerCountMax = 4;
         static int supplyCooldownMax = 61;
-        static int stageSizeMax = 100;
+        static int stageSizeMax = 60;
+        static int stageSizeMin = 11;
         static string filePath { get; } = "config.txt";
 
         static void Main(string[] args)
@@ -27,22 +28,7 @@ namespace Granata
             bool done = false;
             while (!done)
             {
-                // Console.OutputEncoding = Encoding.UTF8;
-                // string title= "\n\n\n\n\n             🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥      🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥";
-                // string title2= "             🟥         🟥      🟥 🟥      🟥         🟥     🟥             🟥";
-                // string title3= "             🟥         🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥";
-                // string title4= "             🟥         🟥         🟥      🟥 🟥      🟥     🟥     🟥      🟥";
-                // string title5= "             🟥         🟥         🟥      🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥\n";
-                // Console.WriteLine(title);
-                // Console.WriteLine(title2);
-                // Console.WriteLine(title3);
-                // Console.WriteLine(title4);
-                // Console.WriteLine(title5);
-
-                // Console.WriteLine("          🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
-                // Console.WriteLine("          🟥  Press ENTER ↩️  to start game, 🅰️  for configuration, 🅱️  for quit   🟥");
-                // Console.WriteLine("          🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
-                string input = Methods.IntroSound().ToUpper();
+               string input = Methods.IntroSound().ToUpper();
                 switch (input)
                 {
                     
@@ -91,7 +77,8 @@ namespace Granata
             supplyCooldown = temp;
             System.Console.WriteLine("Size of stage, in spaces (default is 30):");
             Methods.ValidateConfigInput(ref temp, 30, stageSizeMax);
-            stageSize = temp;
+            if(temp > stageSizeMin) stageSize = temp;
+            else stageSize = stageSizeMin;
             ClearConfig();
             WriteConfig(maxTurnCount, playerCount, supplyCooldown, stageSize);
         }
@@ -122,7 +109,7 @@ namespace Granata
                                 supplyCooldown = int.Parse(split[1].Trim());
                                 break;
                             case "stageSize":
-                                stageSize = int.Parse(split[1].Trim());
+                                stageSize = int.Parse(split[1].Trim());                              
                                 break;
                         }
                     }
@@ -135,6 +122,7 @@ namespace Granata
             }
 
         }
+
         static void WriteConfig(int maxTurnCount, int playerCount, int supplyCooldown, int stageSize)
         {
             try
@@ -156,16 +144,13 @@ namespace Granata
         }
         static void Game()
         {
-            Stage.gridSize = stageSize;
-            // int[] pos = new int[] { 14, 14};
-            // Stage.actualProjectile = new Projectile("rock", pos , 3, 250, 15, 1, "🥎");
+            Stage.gridSize = stageSize;           
             Stage.InitializePlayer(playerCount);
             Stage.InitializeObstacule();//This sets property selectionOfObstacle
             Stage.SetListObstacle();
             Stage.RandomSetPosition();
             Stage.RenderGrid();
 
-            //CreateStage(stageSize);
             for (int turnCounter = 0; turnCounter < maxTurnCount; turnCounter++)
             {
                 if (turnCounter % supplyCooldown == 0) //Each 10 turns we refill, we count turn 0 as also one were we supply the projectiles 
@@ -191,7 +176,7 @@ namespace Granata
                     continue;
                 }
                 aliveCount += 1;
-                alive = player.Name;
+                alive = player.Symbol;
 
             }
             if (aliveCount == 1)
@@ -206,6 +191,7 @@ namespace Granata
         {
             Stage.players.Clear();
             Stage.objectObstacleList.Clear();
+            Stage.objectMinesList.Clear();
         }
 
     }
