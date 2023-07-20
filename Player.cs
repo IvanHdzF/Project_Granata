@@ -136,7 +136,7 @@ namespace Granata
 
             Console.WriteLine($"\n{offsetTitle}🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷");
             System.Console.WriteLine($"{offsetTitle}🔷  ❤️  ➖➖➖{hpPrint}   🔷");
-            string[] types = { "⚾", "⛔", "📛" };
+            string[] types = { "⚾", "⛔", "💠" };
             foreach (var key in Stage.players[playerN].Projectiles.Keys)
             {
                 string projStr = $"{Stage.players[playerN].Projectiles[key]}";

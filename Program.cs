@@ -22,6 +22,8 @@ namespace Granata
 
         static void Main(string[] args)
         {
+
+
             InitConfig();
             ReadConfig();
             bool done = false;
@@ -45,9 +47,7 @@ namespace Granata
                 string input = Methods.IntroSound().ToUpper();
                 switch (input)
                 {
-                    
                     case "\r":
-
                         Game();
                         break;
                     case "A":
@@ -58,7 +58,9 @@ namespace Granata
                         break;
                 }
             }
-            System.Console.WriteLine("Thanks for playing!!! :)");
+            System.Console.WriteLine("\n\n\n\n\n\n                                     🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
+            System.Console.WriteLine("\n\n\n\n                                       🟥 ⚒️  🟥   Thanks for playing   🟥 ⚒️  🟥\n\n\n\n");
+            System.Console.WriteLine("                                     🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥\n\n\n\n\n\n");
         }
 
         static void InitConfig()
@@ -72,24 +74,34 @@ namespace Granata
             playerCount = 2;
             supplyCooldown = 10;
             stageSize = 30;
-            System.Console.WriteLine("Config.txt file doesn't exist, creating one...");
+            System.Console.WriteLine("❌❌❌❌❌❌  Config.txt file doesn't exist, creating one...  ❌❌❌❌❌❌");
             WriteConfig(maxTurnCount, playerCount, supplyCooldown, stageSize);
         }
 
         static void UpdateConfig()
         {
             int temp = maxTurnCount;
-            System.Console.WriteLine("Update the following settings:");
-            System.Console.WriteLine("Maximum number of turns: (default is 30)");
+            System.Console.WriteLine("\n\n\n                       🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣");
+            System.Console.WriteLine("                       🟣   Update the following settings  🟣");
+            System.Console.WriteLine("                       🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣\n");
+            System.Console.WriteLine("\n                       🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸");
+            System.Console.WriteLine("                       🔸  Maximum number of turns: (default is 3️⃣ 0️⃣ )  🔸");
+            System.Console.WriteLine("                       🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸\n");
             Methods.ValidateConfigInput(ref temp, 30, maxTurnCountMax);
             maxTurnCount = temp;
-            System.Console.WriteLine("Number of players (up to 4, default is 2):");
+            System.Console.WriteLine("\n                       🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸");
+            System.Console.WriteLine("                       🔸  Number of players (up to 4️⃣  default is 2️⃣ )  🔸");
+            System.Console.WriteLine("                       🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸\n");
             Methods.ValidateConfigInput(ref temp, 2, playerCountMax);
             playerCount = temp;
-            System.Console.WriteLine("Number of turns between each projectile supply (default is 10):");
+            System.Console.WriteLine("\n                       🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸");
+            System.Console.WriteLine("                       🔸  Number of turns between each projectile supply (default is 1️⃣ 0️⃣ )  🔸");
+            System.Console.WriteLine("                       🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸\n");
             Methods.ValidateConfigInput(ref temp, 10, supplyCooldownMax);
             supplyCooldown = temp;
-            System.Console.WriteLine("Size of stage, in spaces (default is 30):");
+            System.Console.WriteLine("\n                       🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸");
+            System.Console.WriteLine("                       🔸  Size of stage, in spaces (default is 3️⃣ 0️⃣ )  🔸");
+            System.Console.WriteLine("                       🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸\n");
             Methods.ValidateConfigInput(ref temp, 30, stageSizeMax);
             stageSize = temp;
             ClearConfig();
@@ -191,12 +203,17 @@ namespace Granata
                     continue;
                 }
                 aliveCount += 1;
-                alive = player.Name;
+                alive = player.Symbol;
 
             }
             if (aliveCount == 1)
             {
-                System.Console.WriteLine($"{alive} won!");
+                string spacestr = "                          ";
+                System.Console.WriteLine($"{spacestr}🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇");
+                System.Console.WriteLine($"{spacestr}🎇🎇  👑              🎇🎇");
+                System.Console.WriteLine($"{spacestr}🎇🎇  {alive} won!  🍾🏆   🎇🎇");
+                System.Console.WriteLine($"{spacestr}🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇");
+                
                 Player.Sound("Victory.wav");
                 return true;
             }

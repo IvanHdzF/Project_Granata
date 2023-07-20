@@ -31,11 +31,11 @@ namespace Granata
                     waveOut.Play();
 
                     Console.OutputEncoding = Encoding.UTF8;
-                    string title= "\n\n\n\n\n             🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥      🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥";
-                    string title2= "             🟥         🟥      🟥 🟥      🟥         🟥     🟥             🟥";
-                    string title3= "             🟥         🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥";
-                    string title4= "             🟥         🟥         🟥      🟥 🟥      🟥     🟥     🟥      🟥";
-                    string title5= "             🟥         🟥         🟥      🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥\n";
+                    string title= "\n\n\n\n\n                          🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥      🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥";
+                    string title2= "                          🟥         🟥      🟥 🟥      🟥         🟥     🟥             🟥";
+                    string title3= "                          🟥         🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥";
+                    string title4= "                          🟥         🟥         🟥      🟥 🟥      🟥     🟥     🟥      🟥";
+                    string title5= "                          🟥         🟥         🟥      🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥\n";
                     System.Threading.Thread.Sleep(2000);
                     Console.WriteLine(title);
                     System.Threading.Thread.Sleep(1600);
@@ -48,9 +48,9 @@ namespace Granata
                     Console.WriteLine(title5);
                     System.Threading.Thread.Sleep(1500);
 
-                    Console.WriteLine("          🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
-                    Console.WriteLine("          🟥  Press ENTER ↩️  to start game, 🅰️  for configuration, 🅱️  for quit   🟥");
-                    Console.WriteLine("          🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
+                    Console.WriteLine("                       🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
+                    Console.WriteLine("                       🟥  Press ENTER ↩️  to start game, 🅰️  for configuration, 🅱️  for quit   🟥");
+                    Console.WriteLine("                       🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
 
                     // Espera a que se termine la reproducción
                     while (waveOut.PlaybackState == PlaybackState.Playing && iniciar =='?')
@@ -160,7 +160,7 @@ namespace Granata
                         done = true;
                         break;
                     default:
-                        Console.WriteLine("Enter a valid action!");
+                        Console.WriteLine("❌❌❌❌   Enter a valid action❗    ❌❌❌❌");
                         break;
                 }
             }
@@ -177,16 +177,16 @@ namespace Granata
                     return new Projectile("2", pos, dir, 75, 25, 25, "⛔");
 
                 case "3":
-                    return new Projectile("3", pos, dir, 100, 25, 25, "📛");
+                    return new Projectile("3", pos, dir, 100, 25, 25, "💠");
 
                 default:
-                    System.Console.WriteLine("Not a valid type!");
+                    System.Console.WriteLine("❌❌❌   Not a valid type❗    ❌❌❌");
                     return null;
             }
         }
         internal static void supplyProjectiles()
         {
-            System.Console.WriteLine("Supplying projectiles");
+            System.Console.WriteLine("❌❌❌  Supplying projectiles ⬇️  ❌❌❌");
             foreach (var player in Stage.players)
             {
                 player.Refill();
@@ -206,13 +206,13 @@ namespace Granata
                 done = int.TryParse(input, out value);
                 if (!done)
                 {
-                    System.Console.WriteLine("Please input an integer value!");
+                    System.Console.WriteLine("❌❌❌❌   Please input an integer value❗   ❌❌❌❌");
                     continue;
                 }
                 if (value > maxValue)
                 {
                     done = false;
-                    System.Console.WriteLine($"Max value is {maxValue}!");
+                    System.Console.WriteLine($"❌❌❌❌   Max value is {maxValue}❗   ❌❌❌❌");
                 }
             }
         }
@@ -230,7 +230,7 @@ namespace Granata
                 }
                 else
                 {
-                    System.Console.WriteLine($"Select a value between {minValue} and {maxValue}");
+                    System.Console.WriteLine($"❌❌❌❌   Select a value between {minValue} and {maxValue}   ❌❌❌❌");
                 }
 
             }

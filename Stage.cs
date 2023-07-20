@@ -250,7 +250,5 @@ namespace Granata
             }
             return 300;
         }
-
-
     }
 }
