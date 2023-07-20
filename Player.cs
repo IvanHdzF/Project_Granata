@@ -136,7 +136,7 @@ namespace Granata
 
             Console.WriteLine($"\n{offsetTitle}🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷");
             System.Console.WriteLine($"{offsetTitle}🔷  ❤️  ➖➖➖{hpPrint}   🔷");
-            string[] types = { "⚾", "⛔", "💠" };
+            string[] types = { "⚾", "⛔", "💠","📀" };
             foreach (var key in Stage.players[playerN].Projectiles.Keys)
             {
                 string projStr = $"{Stage.players[playerN].Projectiles[key]}";
@@ -250,13 +250,14 @@ namespace Granata
         public void Refill()
         {
             Projectiles["1"] = 10;
-            Projectiles["2"] = 20;
-            Projectiles["3"] = 2;
+            Projectiles["2"] = 5;
+            Projectiles["3"] = 5;
+            Projectiles["4"] = 1;
         }
 
         public bool plantMine(int[] pos)
         {
-            if (Stage.actualProjectile.Tipo == "1" || Stage.actualProjectile.Tipo == "2")
+            if (Stage.actualProjectile.Tipo != "3")
                 return false;
             Stage.objectMinesList.Add(Stage.actualProjectile);
             //prob mal
@@ -264,7 +265,7 @@ namespace Granata
         }
         public bool grenadeImpact()
         {
-            if (Stage.actualProjectile.Tipo == "1" || Stage.actualProjectile.Tipo == "3")
+            if (Stage.actualProjectile.Tipo != "2")
                 return false;
             int projX = Stage.actualProjectile.ProjectilePosition[0];
             int projY = Stage.actualProjectile.ProjectilePosition[1];
@@ -307,10 +308,12 @@ namespace Granata
                     System.Console.WriteLine("❌❌❌❌❌❌❌❌❌❌❌❌");
                     player.HP -= Stage.actualProjectile.Damage;
                     playerCollision = true;
-                    if (player.HP <= 0) player.Position[0] = 200;
-
-
-                    string[] audios = { "Bonk.wav", "Bum.wav", "Bum.wav" };
+                    if (player.HP <= 0)
+                    {
+                        Player.Sound("Fatality.wav");
+                        player.Position[0] = 200;
+                    }
+                    string[] audios = { "Bonk.wav", "Bum.wav", "Bum.wav","Hit.wav" };
                     Sound(audios[int.Parse(Stage.actualProjectile.Tipo) - 1]);
                     return (dir, playerCollision);
 

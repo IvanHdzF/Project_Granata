@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.IO;
-using System.Media;
 using NAudio.Wave;
 
 namespace Granata
@@ -74,7 +73,7 @@ namespace Granata
             while (!done)
             {   
                 if (Stage.players[playerN].HP <= 0)
-                {
+                {                    
                     return;
                 }
                 Stage.players[playerN].ShowInventory(playerN);
@@ -124,10 +123,10 @@ namespace Granata
                             offset_text+= " ";
                         } 
                         Console.WriteLine($"{offset_text}🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷");
-                        System.Console.Write($"\n{offset_text}   Select a projectile\n\n{offset_text}   1️⃣  for ⚾\n{offset_text}   2️⃣  for ⛔\n{offset_text}   3️⃣  for 📛\n");
+                        System.Console.Write($"\n{offset_text}   Select a projectile\n\n{offset_text}   1️⃣  for ⚾\n{offset_text}   2️⃣  for ⛔\n{offset_text}   3️⃣  for 📛\n{offset_text}   4️⃣  for 📀\n");
                         Console.WriteLine($"\n{offset_text}🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷");
 
-                        string projType = StringIntInput(1, 3);
+                        string projType = StringIntInput(1, 4);
                         Player.Sound("Ok.wav");
                         if (Stage.players[playerN].CheckProjectileAvailible(projType, playerN))
                         {
@@ -151,10 +150,6 @@ namespace Granata
                                 Player.Sound("Planted.wav");
                                 System.Console.WriteLine("MINA");
                             }
-                                
-                                //Player.Sound("Bum.wav");
-                            
-
                         }
                         Stage.actualProjectile = null;
                         done = true;
@@ -179,6 +174,8 @@ namespace Granata
                 case "3":
                     return new Projectile("3", pos, dir, 100, 25, 25, "💠");
 
+                case "4":
+                    return new Projectile("4", pos, dir, 10001, 10, 0, "📀");
                 default:
                     System.Console.WriteLine("❌❌❌   Not a valid type❗    ❌❌❌");
                     return null;
@@ -218,7 +215,7 @@ namespace Granata
         }
 
 
-        internal static string StringIntInput(int minValue, int maxValue)
+        public static string StringIntInput(int minValue, int maxValue)
         {
             //validates that input int string eg "2" is within values of minValue and maxValue            
             while (true)
