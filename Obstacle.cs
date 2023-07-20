@@ -42,16 +42,15 @@ namespace Granata
             if (Stage.objectObstacleList[i].hitPoints > 0)
             {
                 Stage.objectObstacleList[i].hitPoints--;
-                Console.WriteLine("Obstacle hit! Remaining hit points: " + Stage.objectObstacleList[i].hitPoints);
+                //Console.WriteLine("Obstacle hit! Remaining hit points: " + Stage.objectObstacleList[i].hitPoints);
             }
             if (Stage.objectObstacleList[i].hitPoints <= 0)
             {
                 Stage.objectObstacleList.RemoveAt(i);
             }
             else
-            {
-                
-                Console.WriteLine("Obstacle has no more hit points!");
+            {   
+                //Console.WriteLine("Obstacle has no more hit points!");
             }
         }
 

@@ -77,7 +77,7 @@ namespace Granata
                 {
                     return;
                 }
-                 Stage.players[playerN].ShowInventory(playerN);
+                Stage.players[playerN].ShowInventory(playerN);
                 string offset_title= " ";
                 for (int i = 0; i < Stage.gridSize - 23; i ++)
                 {
@@ -85,7 +85,7 @@ namespace Granata
 
                 }   
                 Console.WriteLine(offset_title+"🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
-                System.Console.Write($"{offset_title}🟥Player {playerN+1} What do you want to do? WASD to Move You have {maxActionCount-actionCount} move actions left to end turn 🟥\n{offset_title}🟥Numberpad numbers to Throw..............................................................🟥\n");
+                System.Console.Write($"{offset_title}🟥 Player {playerN+1} What do you want to do? WASD to 🕹️ . You have {maxActionCount-actionCount} move actions left to end turn 🟥\n{offset_title}🟥 Numberpad numbers to Throw............................................................ 🟥\n");
                 Console.WriteLine(offset_title+"🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
                 System.Console.WriteLine("\n");
                 char input = Console.ReadKey().KeyChar;
@@ -118,7 +118,14 @@ namespace Granata
                     case '2':
                     case '3':
                         int intInput = input - '0';
-                        System.Console.Write("Select a projectile (1 rock, 2 grenade, 3 mine): ");
+                        string offset_text= " ";
+                        for (int i = 0; i < Stage.gridSize + 12; i ++)
+                        {
+                            offset_text+= " ";
+                        } 
+                        Console.WriteLine($"{offset_text}🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷");
+                        System.Console.Write($"\n{offset_text}   Select a projectile\n\n{offset_text}   1️⃣  for ⚾\n{offset_text}   2️⃣  for ⛔\n{offset_text}   3️⃣  for 📛\n");
+                        Console.WriteLine($"\n{offset_text}🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷");
 
                         string projType = StringIntInput(1, 3);
                         Player.Sound("Ok.wav");
@@ -167,10 +174,10 @@ namespace Granata
                     return new Projectile("1", pos, dir, 25, 30, 0, "⚾");
 
                 case "2":
-                    return new Projectile("2", pos, dir, 75, 25, 25, "💣");
+                    return new Projectile("2", pos, dir, 75, 25, 25, "⛔");
 
                 case "3":
-                    return new Projectile("3", pos, dir, 100, 25, 25, "🧨");
+                    return new Projectile("3", pos, dir, 100, 25, 25, "📛");
 
                 default:
                     System.Console.WriteLine("Not a valid type!");

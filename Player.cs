@@ -100,12 +100,69 @@ namespace Granata
 
         public void ShowInventory(int playerN)
         {
-            System.Console.WriteLine($"HP LEFT: {Stage.players[playerN].HP}");
-            string[] types = { "Rock", "Grenade", "Mine" };
+            string[] number = {"0️⃣","1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣"};
+            string hpStr = $"{Stage.players[playerN].HP}";
+            char[] hpChar = hpStr.ToCharArray();
+            string hpPrint = "";
+
+            string offsetTitle= " ";
+            for (int i = 0; i < Stage.gridSize + 12; i ++)
+            {
+                offsetTitle+= " ";
+            }   
+
+            foreach (char c in hpChar)
+            {
+                for (int i = 0; i < number.Length; i++)
+                {
+                    if (int.Parse(c.ToString()) == i)
+                    {
+                        hpPrint += " " + number[i];
+                    }
+                }
+            }
+
+            if (hpPrint.Length != 12)
+            {
+                if(hpPrint.Length == 8)
+                {
+                    hpPrint = " 0️⃣" + hpPrint;
+                }
+                else if(hpPrint.Length == 4)
+                {
+                    hpPrint = " 0️⃣ 0️⃣" + hpPrint;
+                }
+            }
+
+            Console.WriteLine($"\n{offsetTitle}🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷");
+            System.Console.WriteLine($"{offsetTitle}🔷  ❤️  ➖➖➖{hpPrint}   🔷");
+            string[] types = { "⚾", "⛔", "📛" };
             foreach (var key in Stage.players[playerN].Projectiles.Keys)
             {
-                System.Console.WriteLine($"{Stage.players[playerN].Symbol} has {types[int.Parse(key) - 1]}: {Stage.players[playerN].Projectiles[key]} ");
+                string projStr = $"{Stage.players[playerN].Projectiles[key]}";
+                char[] projChar = projStr.ToCharArray();
+                string projPrint = "";
+
+                foreach (char c in projChar)
+                {
+                    for (int i = 0; i < number.Length; i++)
+                    {
+                        if (int.Parse(c.ToString()) == i)
+                        {
+                            projPrint += " " + number[i];
+                        }
+                    }
+                }
+
+                if (projPrint.Length != 8)
+                {
+
+                    projPrint = " 0️⃣" + projPrint;
+                }
+
+                System.Console.WriteLine($"{offsetTitle}🔷  {Stage.players[playerN].Symbol} has {types[int.Parse(key) - 1]}: {projPrint}   🔷");
             }
+            Console.WriteLine($"{offsetTitle}🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷\n");
         }
 
         public bool CheckProjectileAvailible(string type, int playerN)
@@ -245,7 +302,9 @@ namespace Granata
                 //direct hit
                 if (projX == player.Position[0] && projY == player.Position[1])
                 {
-                    Console.WriteLine($"{player.Name} was hit!");
+                    System.Console.WriteLine("❌❌❌❌❌❌❌❌❌❌❌❌");
+                    Console.WriteLine($"❌{player.Symbol} was hit❗ Lost 💔❌");
+                    System.Console.WriteLine("❌❌❌❌❌❌❌❌❌❌❌❌");
                     player.HP -= Stage.actualProjectile.Damage;
                     playerCollision = true;
                     if (player.HP <= 0) player.Position[0] = 200;
