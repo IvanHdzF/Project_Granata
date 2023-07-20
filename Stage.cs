@@ -10,8 +10,8 @@ namespace Granata
         
         // MAgic Numbers
         //TODO: Number of generated objects is wrong
-        public static int MIN_NUMBER_OF_OBSTACLE = 10;
-        public static int MAX_NUMBER_OF_OBSTACLE = 14;
+        public static int MIN_NUMBER_OF_OBSTACLE = Convert.ToInt32(0.25*Program.stageSize);
+        public static int MAX_NUMBER_OF_OBSTACLE = Convert.ToInt32(0.30*Program.stageSize);
 
         // Grid size
         public static int gridSize = 30;
@@ -86,7 +86,7 @@ namespace Granata
                 {
                     int count = 0;
                     randomNumberX = random.Next(4, gridSize - 4);
-                    randomNumberY = random.Next(4, gridSize - 4);
+                    randomNumberY = random.Next(4, gridSize - 4 - Obstacle.MaxObstacleSize);
 
                     for (int j = 0; j < checkObstaclesX.Count; j++)
                     {
