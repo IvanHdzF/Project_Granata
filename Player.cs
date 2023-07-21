@@ -82,14 +82,21 @@ namespace Granata
         {
             if (Stage.CheckMines(Stage.players[playerN].Position[0], Stage.players[playerN].Position[1]))
             {
-                Stage.players[playerN].HP -= Stage.objectiMinesList[0].Damage;
-                if (Stage.players[playerN].HP <= 0) Stage.players[playerN].Position[0] = 200;//Remove the players from the field if they die
-                foreach (var mine in Stage.objectiMinesList)
+                Stage.players[playerN].HP -= Stage.objectMinesList[0].Damage;
+                if (Stage.players[playerN].HP <= 0) 
                 {
-                    if (mine.ProjectilePosition[0] == Stage.players[playerN].Position[0] && mine.ProjectilePosition[1] == Stage.players[playerN].Position[1])
-                        Stage.objectiMinesList.Remove(mine);
+                    Stage.players[playerN].Position[0] = 200;//Remove the players from the field if they die
+                    Stage.deadList.Insert(0, Stage.players[playerN].Symbol);
+                }
+                for (int i = 0; i < Stage.objectMinesList.Count; i++)
+                {
+                    if (Stage.objectMinesList[i].ProjectilePosition[0] == Stage.players[playerN].Position[0] && Stage.objectMinesList[i].ProjectilePosition[1] == Stage.players[playerN].Position[1])
+                    {
+                        Stage.objectMinesList.RemoveAt(i);
                         Sound("Bum.wav");
                         return;
+                    }
+
                 }
             }
 
@@ -97,12 +104,69 @@ namespace Granata
 
         public void ShowInventory(int playerN)
         {
-            System.Console.WriteLine($"HP LEFT: {Stage.players[playerN].HP}");
-            string[] types = { "Rock", "Grenade", "Mine" };
+            string[] number = {"0️⃣","1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣"};
+            string hpStr = $"{Stage.players[playerN].HP}";
+            char[] hpChar = hpStr.ToCharArray();
+            string hpPrint = "";
+
+            string offsetTitle= " ";
+            for (int i = 0; i < Stage.gridSize + 12; i ++)
+            {
+                offsetTitle+= " ";
+            }   
+
+            foreach (char c in hpChar)
+            {
+                for (int i = 0; i < number.Length; i++)
+                {
+                    if (int.Parse(c.ToString()) == i)
+                    {
+                        hpPrint += " " + number[i];
+                    }
+                }
+            }
+
+            if (hpPrint.Length != 12)
+            {
+                if(hpPrint.Length == 8)
+                {
+                    hpPrint = " 0️⃣" + hpPrint;
+                }
+                else if(hpPrint.Length == 4)
+                {
+                    hpPrint = " 0️⃣ 0️⃣" + hpPrint;
+                }
+            }
+
+            Console.WriteLine($"\n{offsetTitle}🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷");
+            System.Console.WriteLine($"{offsetTitle}🔷  ❤️  ➖➖➖{hpPrint}   🔷");
+            string[] types = { "⚾", "⛔", "💠","📀" };
             foreach (var key in Stage.players[playerN].Projectiles.Keys)
             {
-                System.Console.WriteLine($"{Stage.players[playerN].Symbol} has {types[int.Parse(key) - 1]}: {Stage.players[playerN].Projectiles[key]} ");
+                string projStr = $"{Stage.players[playerN].Projectiles[key]}";
+                char[] projChar = projStr.ToCharArray();
+                string projPrint = "";
+
+                foreach (char c in projChar)
+                {
+                    for (int i = 0; i < number.Length; i++)
+                    {
+                        if (int.Parse(c.ToString()) == i)
+                        {
+                            projPrint += " " + number[i];
+                        }
+                    }
+                }
+
+                if (projPrint.Length != 8)
+                {
+
+                    projPrint = " 0️⃣" + projPrint;
+                }
+
+                System.Console.WriteLine($"{offsetTitle}🔷  {Stage.players[playerN].Symbol} has {types[int.Parse(key) - 1]}: {projPrint}   🔷");
             }
+            Console.WriteLine($"{offsetTitle}🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷\n");
         }
 
         public bool CheckProjectileAvailible(string type, int playerN)
@@ -117,7 +181,7 @@ namespace Granata
                 }
                 else
                 {
-                    System.Console.WriteLine("Not enough projectiles of that type!");
+                    System.Console.WriteLine($"{Methods.offset_title}❌❌❌❌  Not enough projectiles of that type❗  ❌❌❌❌\n");
                     return false;
                 }
             }
@@ -181,8 +245,6 @@ namespace Granata
                     break;
 
                 default:
-                    Console.WriteLine("Invalid move. Try again.");
-                    Thread.Sleep(mydelay);
                     break;
             }
         }
@@ -190,21 +252,22 @@ namespace Granata
         public void Refill()
         {
             Projectiles["1"] = 10;
-            Projectiles["2"] = 20;
-            Projectiles["3"] = 2;
+            Projectiles["2"] = 5;
+            Projectiles["3"] = 5;
+            Projectiles["4"] = 1;
         }
 
         public bool plantMine(int[] pos)
         {
-            if (Stage.actualProjectile.Tipo == "1" || Stage.actualProjectile.Tipo == "2")
-                return false;            
-            Stage.objectiMinesList.Add(Stage.actualProjectile);
+            if (Stage.actualProjectile.Tipo != "3")
+                return false;
+            Stage.objectMinesList.Add(Stage.actualProjectile);
             //prob mal
             return true;
         }
         public bool grenadeImpact()
         {
-            if (Stage.actualProjectile.Tipo == "1" || Stage.actualProjectile.Tipo == "3")
+            if (Stage.actualProjectile.Tipo != "2")
                 return false;
             int projX = Stage.actualProjectile.ProjectilePosition[0];
             int projY = Stage.actualProjectile.ProjectilePosition[1];
@@ -222,7 +285,11 @@ namespace Granata
                         else if (player.Position[0] == x && player.Position[1] == y)
                         {
                             player.HP -= Stage.actualProjectile.SplashDamage;
-                            if (player.HP <= 0) player.Position[0] = 200;//Remove the players from the field if they die
+                            if (player.HP <= 0)
+                            {
+                                player.Position[0] = 200;//Remove the players from the field if they die
+                                Stage.deadList.Insert(0, player.Symbol);
+                            } 
                             return true;
                         }
                     }
@@ -239,16 +306,27 @@ namespace Granata
             {
                 int projX = Stage.actualProjectile.ProjectilePosition[0];
                 int projY = Stage.actualProjectile.ProjectilePosition[1];
+
+                string offsetTitle= " ";
+                for (int i = 0; i < Stage.gridSize + 12; i ++)
+                {
+                    offsetTitle+= " ";
+                }   
                 //direct hit
                 if (projX == player.Position[0] && projY == player.Position[1])
                 {
-                    Console.WriteLine($"{player.Name} was hit!");
+                    System.Console.WriteLine($"\n\n{offsetTitle}❌❌❌❌❌❌❌❌❌❌❌❌");
+                    Console.WriteLine($"{offsetTitle}❌{player.Symbol} was hit❗ Lost 💔❌");
+                    System.Console.WriteLine($"{offsetTitle}❌❌❌❌❌❌❌❌❌❌❌❌\n");
                     player.HP -= Stage.actualProjectile.Damage;
                     playerCollision = true;
-                    if (player.HP <= 0) player.Position[0] = 200;
-
-
-                    string[] audios = { "Bonk.wav", "Bum.wav", "Bum.wav" };
+                    if (player.HP <= 0)
+                    {
+                        Player.Sound("Hit.wav");
+                        player.Position[0] = 200;
+                        Stage.deadList.Insert(0, player.Symbol);
+                    }
+                    string[] audios = { "Bonk.wav", "Bum.wav", "Bum.wav","Fatality.wav" };
                     Sound(audios[int.Parse(Stage.actualProjectile.Tipo) - 1]);
                     return (dir, playerCollision);
 

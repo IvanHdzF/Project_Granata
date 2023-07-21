@@ -10,16 +10,17 @@ namespace Granata
         
         // MAgic Numbers
         //TODO: Number of generated objects is wrong
-        public static int MIN_NUMBER_OF_OBSTACLE = 10;
-        public static int MAX_NUMBER_OF_OBSTACLE = 14;
+        public static int MIN_NUMBER_OF_OBSTACLE = Convert.ToInt32(0.25*Program.stageSize);
+        public static int MAX_NUMBER_OF_OBSTACLE = Convert.ToInt32(0.30*Program.stageSize);
 
         // Grid size
         public static int gridSize = 30;
 
         // Call and define variables
-        public static List<Projectile> objectiMinesList = new List<Projectile>();
+        public static List<Projectile> objectMinesList = new List<Projectile>();
         public static List<Obstacle> objectObstacleList = new List<Obstacle>();
         public static List<Player> players = new List<Player>();
+        public static List<string> deadList = new List<string>();
 
         public static int selectedNumberOfObstacle = 5;
         public static List<Obstacle> selectionOfObstacle;
@@ -86,7 +87,7 @@ namespace Granata
                 {
                     int count = 0;
                     randomNumberX = random.Next(4, gridSize - 4);
-                    randomNumberY = random.Next(4, gridSize - 4);
+                    randomNumberY = random.Next(4, gridSize - 4 - Obstacle.MaxObstacleSize);
 
                     for (int j = 0; j < checkObstaclesX.Count; j++)
                     {
@@ -119,18 +120,18 @@ namespace Granata
             Console.CursorVisible = false;
             Console.OutputEncoding = Encoding.UTF8;
             Console.Clear();
-            string title= "\n\n\n\n\n             🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥      🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥";
-            string title2= "             🟥         🟥      🟥 🟥      🟥         🟥     🟥             🟥";
-            string title3= "             🟥         🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥";
-            string title4= "             🟥         🟥         🟥      🟥 🟥      🟥     🟥     🟥      🟥";
-            string title5= "             🟥         🟥         🟥      🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥\n";
-            string title6= "             🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥\n";
-            Console.WriteLine(title);
-            Console.WriteLine(title2);
-            Console.WriteLine(title3);
-            Console.WriteLine(title4);
-            Console.WriteLine(title5);
-            Console.WriteLine(title6);
+            string offset_title= " ";
+            for (int i = 0; i < gridSize - 12; i ++)
+            {
+                offset_title+= " ";
+
+            }    
+            string title4= "                       🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥";
+            string title5= "                       🟥        граната       🟥";
+            string title6= "                       🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥\n";
+            Console.WriteLine(offset_title + title4);
+            Console.WriteLine(offset_title + title5);
+            Console.WriteLine(offset_title + title6);
             string offset="                       ➿";
             string wall="";
 
@@ -201,11 +202,11 @@ namespace Granata
         
         public static bool CheckMines(int x, int y)
         {
-            for (int i = 0; i < objectiMinesList.Count; i++)
+            for (int i = 0; i < objectMinesList.Count; i++)
             {
-                if ((x == objectiMinesList[i].ProjectilePosition[0] && y == objectiMinesList[i].ProjectilePosition[1]))
+                if ((x == objectMinesList[i].ProjectilePosition[0] && y == objectMinesList[i].ProjectilePosition[1]))
                 {
-                    matrixLine+=objectiMinesList[i].Symbol;
+                    matrixLine+=objectMinesList[i].Symbol;
                     return true;
                 }
             }
@@ -250,7 +251,5 @@ namespace Granata
             }
             return 300;
         }
-
-
     }
 }

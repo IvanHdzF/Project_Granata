@@ -1,9 +1,70 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.IO;
+using NAudio.Wave;
 
 namespace Granata
 {
     class Methods
     {
+        public static string offset_title= " ";
+        public static string IntroSound()
+        {
+            // Ruta al archivo de audio
+            //string[] audios = { "Bonk.wav", "Bum.wav", "Bum.wav" };
+            string audioFilePath = "intro.wav";
+
+            // Crea un objeto WaveOut para la reproducción de audio
+            using (var waveOut = new WaveOutEvent())
+            {
+                // Crea un objeto WaveFileReader para leer el archivo de audio
+                using (var audioFileReader = new WaveFileReader(audioFilePath))
+                {
+                    Console.Clear();
+                    char iniciar = '?';
+                    // Asigna el objeto WaveFileReader al WaveOut
+                    waveOut.Init(audioFileReader);
+
+                    // Reproduce el audio
+                    waveOut.Play();
+
+                    Console.OutputEncoding = Encoding.UTF8;
+                    string title= "\n\n\n\n\n                          🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥      🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥";
+                    string title2= "                          🟥         🟥      🟥 🟥      🟥         🟥     🟥             🟥";
+                    string title3= "                          🟥         🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥";
+                    string title4= "                          🟥         🟥         🟥      🟥 🟥      🟥     🟥     🟥      🟥";
+                    string title5= "                          🟥         🟥         🟥      🟥 🟥🟥🟥🟥🟥     🟥     🟥🟥🟥🟥🟥\n";
+                    System.Threading.Thread.Sleep(2000);
+                    Console.WriteLine(title);
+                    System.Threading.Thread.Sleep(1600);
+                    Console.WriteLine(title2);
+                    System.Threading.Thread.Sleep(1600);
+                    Console.WriteLine(title3);
+                    System.Threading.Thread.Sleep(1600);
+                    Console.WriteLine(title4);
+                    System.Threading.Thread.Sleep(1600);
+                    Console.WriteLine(title5);
+                    System.Threading.Thread.Sleep(1500);
+
+                    Console.WriteLine("                       🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
+                    Console.WriteLine("                       🟥  Press ENTER ↩️  to start game, 🅰️  for configuration, 🅱️  for quit   🟥");
+                    Console.WriteLine("                       🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
+
+                    // Espera a que se termine la reproducción
+                    while (waveOut.PlaybackState == PlaybackState.Playing && iniciar =='?')
+                    {
+                        iniciar = Console.ReadKey().KeyChar;
+                        System.Threading.Thread.Sleep(500);
+                        return iniciar.ToString();
+                    }
+
+                    return "";
+                }
+            }
+        }
         internal static void PlayerTurn(int playerN)
         {
             Stage.RenderGrid();
@@ -14,13 +75,21 @@ namespace Granata
             while (!done)
             {   
                 if (Stage.players[playerN].HP <= 0)
-                {
+                {                    
                     return;
                 }
-                 Stage.players[playerN].ShowInventory(playerN);
-                Console.WriteLine("   🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
-                System.Console.Write($"   🟥Player {playerN+1} What do you want to do? WASD to Move You have {maxActionCount-actionCount} move actions left to end turn🟥\n   🟥Numberpad numbers to Throw............................................................🟥\n");
-                Console.WriteLine("   🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
+
+                offset_title = " ";
+
+                Stage.players[playerN].ShowInventory(playerN);
+                for (int i = 0; i < Stage.gridSize - 12; i ++)
+                {
+                    offset_title+= " ";
+
+                }   
+                Console.WriteLine(offset_title+"🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
+                System.Console.Write($"{offset_title}🟥  {Stage.players[playerN].Symbol} ➖ Press WASD to 🕹️ . You have {maxActionCount-actionCount} move actions left to end turn 🟥\n{offset_title}🟥  Numberpad numbers to Throw....................................... 🟥\n");
+                Console.WriteLine(offset_title+"🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
                 System.Console.WriteLine("\n");
                 char input = Console.ReadKey().KeyChar;
                 System.Console.WriteLine();
@@ -52,9 +121,16 @@ namespace Granata
                     case '2':
                     case '3':
                         int intInput = input - '0';
-                        System.Console.Write("Select a projectile (1 rock, 2 grenade, 3 mine): ");
+                        string offset_text= " ";
+                        for (int i = 0; i < Stage.gridSize + 12; i ++)
+                        {
+                            offset_text+= " ";
+                        } 
+                        Console.WriteLine($"{offset_text}🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷");
+                        System.Console.Write($"\n{offset_text}   Select a projectile\n\n{offset_text}   1️⃣  for ⚾\n{offset_text}   2️⃣  for ⛔\n{offset_text}   3️⃣  for 💠\n{offset_text}   4️⃣  for 📀\n");
+                        Console.WriteLine($"\n{offset_text}🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷");
 
-                        string projType = StringIntInput(1, 3);
+                        string projType = StringIntInput(1, 4);
                         Player.Sound("Ok.wav");
                         if (Stage.players[playerN].CheckProjectileAvailible(projType, playerN))
                         {
@@ -78,16 +154,12 @@ namespace Granata
                                 Player.Sound("Planted.wav");
                                 System.Console.WriteLine("MINA");
                             }
-                                
-                                //Player.Sound("Bum.wav");
-                            
-
                         }
                         Stage.actualProjectile = null;
                         done = true;
                         break;
                     default:
-                        Console.WriteLine("Enter a valid action!");
+                        Console.WriteLine($"{offset_title}❌❌❌❌   Enter a valid action❗    ❌❌❌❌\n");
                         break;
                 }
             }
@@ -101,19 +173,21 @@ namespace Granata
                     return new Projectile("1", pos, dir, 25, 30, 0, "⚾");
 
                 case "2":
-                    return new Projectile("2", pos, dir, 75, 25, 25, "💣");
+                    return new Projectile("2", pos, dir, 75, 25, 25, "⛔");
 
                 case "3":
-                    return new Projectile("3", pos, dir, 100, 25, 25, "🧨");
+                    return new Projectile("3", pos, dir, 100, 25, 25, "💠");
 
+                case "4":
+                    return new Projectile("4", pos, dir, 10001, 10, 0, "📀");
                 default:
-                    System.Console.WriteLine("Not a valid type!");
+                    System.Console.WriteLine($"{offset_title}❌❌❌   Not a valid type❗    ❌❌❌\n");
                     return null;
             }
         }
         internal static void supplyProjectiles()
         {
-            System.Console.WriteLine("Supplying projectiles");
+            System.Console.WriteLine($"{offset_title}❌❌❌  Supplying projectiles ⬇️  ❌❌❌\n");
             foreach (var player in Stage.players)
             {
                 player.Refill();
@@ -133,19 +207,19 @@ namespace Granata
                 done = int.TryParse(input, out value);
                 if (!done)
                 {
-                    System.Console.WriteLine("Please input an integer value!");
+                    System.Console.WriteLine($"{offset_title}❌❌❌❌   Please input an integer value❗   ❌❌❌❌\n");
                     continue;
                 }
                 if (value > maxValue)
                 {
                     done = false;
-                    System.Console.WriteLine($"Max value is {maxValue}!");
+                    System.Console.WriteLine($"{offset_title}❌❌❌❌   Max value is {maxValue}❗   ❌❌❌❌\n");
                 }
             }
         }
 
 
-        internal static string StringIntInput(int minValue, int maxValue)
+        public static string StringIntInput(int minValue, int maxValue)
         {
             //validates that input int string eg "2" is within values of minValue and maxValue            
             while (true)
@@ -157,7 +231,7 @@ namespace Granata
                 }
                 else
                 {
-                    System.Console.WriteLine($"Select a value between {minValue} and {maxValue}");
+                    System.Console.WriteLine($"{offset_title}❌❌❌❌   Select a value between {minValue} and {maxValue}   ❌❌❌❌\n");
                 }
 
             }

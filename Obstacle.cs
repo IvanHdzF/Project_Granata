@@ -8,7 +8,7 @@ namespace Granata
     {
         private static int lastId = 0;
         private const int MinObstacleSize = 2;
-        private const int MaxObstacleSize = 3;
+        public static int MaxObstacleSize = 3;
 
         private static Random random = new Random();
 
@@ -42,16 +42,15 @@ namespace Granata
             if (Stage.objectObstacleList[i].hitPoints > 0)
             {
                 Stage.objectObstacleList[i].hitPoints--;
-                Console.WriteLine("Obstacle hit! Remaining hit points: " + Stage.objectObstacleList[i].hitPoints);
+                //Console.WriteLine("Obstacle hit! Remaining hit points: " + Stage.objectObstacleList[i].hitPoints);
             }
             if (Stage.objectObstacleList[i].hitPoints <= 0)
             {
                 Stage.objectObstacleList.RemoveAt(i);
             }
             else
-            {
-                
-                Console.WriteLine("Obstacle has no more hit points!");
+            {   
+                //Console.WriteLine("Obstacle has no more hit points!");
             }
         }
 

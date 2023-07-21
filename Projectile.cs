@@ -23,6 +23,5 @@ namespace Granata
             this.Symbol = symbol;
 
         }
-
     }
 }
