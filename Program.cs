@@ -92,6 +92,10 @@ namespace Granata
             else stageSize = stageSizeMin;
             ClearConfig();
             WriteConfig(maxTurnCount, playerCount, supplyCooldown, stageSize);
+            System.Console.WriteLine("\n                       🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸");
+            System.Console.WriteLine("                       🔸  Config updated successfully ! 🔸");
+            System.Console.WriteLine("                       🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸\n");
+            System.Threading.Thread.Sleep(3000);
         }
         static void ClearConfig()
         {

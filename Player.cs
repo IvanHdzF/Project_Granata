@@ -243,8 +243,9 @@ namespace Granata
                     Stage.RenderGrid();
                     Thread.Sleep(mydelay);
                     break;
-
                 default:
+                    Stage.RenderGrid();
+                    Thread.Sleep(mydelay);
                     break;
             }
         }
