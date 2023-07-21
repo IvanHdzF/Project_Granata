@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.IO;
 using NAudio.Wave;
+using System.Net.Http;
 
 namespace Granata
 {
@@ -68,6 +69,20 @@ namespace Granata
         internal static void PlayerTurn(int playerN)
         {
             Stage.RenderGrid();
+
+            offset_title = " ";
+
+            for (int i = 0; i < Stage.gridSize - 12; i ++)
+            {
+                offset_title+= " ";
+            }   
+
+            System.Console.WriteLine($"\n{offset_title}    🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
+            System.Console.WriteLine($"{offset_title}    🟥   Confirm {Stage.players[playerN].Symbol} Turn. Press Enter.  🟥");
+            System.Console.WriteLine($"{offset_title}    🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥\n");
+            System.Console.ReadLine();
+            Console.Clear();
+            Stage.RenderGrid();
             bool done = false;
             int actionCount = 0;
             int maxActionCount = 10;
@@ -79,14 +94,7 @@ namespace Granata
                     return;
                 }
 
-                offset_title = " ";
-
                 Stage.players[playerN].ShowInventory(playerN);
-                for (int i = 0; i < Stage.gridSize - 12; i ++)
-                {
-                    offset_title+= " ";
-
-                }   
                 Console.WriteLine(offset_title+"🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
                 System.Console.Write($"{offset_title}🟥  {Stage.players[playerN].Symbol} ➖ Press WASD to 🕹️ . You have {maxActionCount-actionCount} move actions left to end turn 🟥\n{offset_title}🟥  Numberpad numbers to Throw....................................... 🟥\n");
                 Console.WriteLine(offset_title+"🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
@@ -159,7 +167,8 @@ namespace Granata
                         done = true;
                         break;
                     default:
-                        Console.WriteLine($"{offset_title}❌❌❌❌   Enter a valid action❗    ❌❌❌❌\n");
+                        Stage.RenderGrid();
+                        Console.WriteLine($"\n{offset_title}❌❌❌❌   Enter a valid action❗    ❌❌❌❌\n");
                         break;
                 }
             }
