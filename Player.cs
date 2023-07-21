@@ -83,7 +83,11 @@ namespace Granata
             if (Stage.CheckMines(Stage.players[playerN].Position[0], Stage.players[playerN].Position[1]))
             {
                 Stage.players[playerN].HP -= Stage.objectMinesList[0].Damage;
-                if (Stage.players[playerN].HP <= 0) Stage.players[playerN].Position[0] = 200;//Remove the players from the field if they die
+                if (Stage.players[playerN].HP <= 0) 
+                {
+                    Stage.players[playerN].Position[0] = 200;//Remove the players from the field if they die
+                    Stage.deadList.Insert(0, Stage.players[playerN].Symbol);
+                }
                 for (int i = 0; i < Stage.objectMinesList.Count; i++)
                 {
                     if (Stage.objectMinesList[i].ProjectilePosition[0] == Stage.players[playerN].Position[0] && Stage.objectMinesList[i].ProjectilePosition[1] == Stage.players[playerN].Position[1])
@@ -177,7 +181,7 @@ namespace Granata
                 }
                 else
                 {
-                    System.Console.WriteLine("Not enough projectiles of that type!");
+                    System.Console.WriteLine($"{Methods.offset_title}❌❌❌❌  Not enough projectiles of that type❗  ❌❌❌❌\n");
                     return false;
                 }
             }
@@ -241,8 +245,6 @@ namespace Granata
                     break;
 
                 default:
-                    Console.WriteLine("Invalid move. Try again.");
-                    Thread.Sleep(mydelay);
                     break;
             }
         }
@@ -283,7 +285,11 @@ namespace Granata
                         else if (player.Position[0] == x && player.Position[1] == y)
                         {
                             player.HP -= Stage.actualProjectile.SplashDamage;
-                            if (player.HP <= 0) player.Position[0] = 200;//Remove the players from the field if they die
+                            if (player.HP <= 0)
+                            {
+                                player.Position[0] = 200;//Remove the players from the field if they die
+                                Stage.deadList.Insert(0, player.Symbol);
+                            } 
                             return true;
                         }
                     }
@@ -300,20 +306,27 @@ namespace Granata
             {
                 int projX = Stage.actualProjectile.ProjectilePosition[0];
                 int projY = Stage.actualProjectile.ProjectilePosition[1];
+
+                string offsetTitle= " ";
+                for (int i = 0; i < Stage.gridSize + 12; i ++)
+                {
+                    offsetTitle+= " ";
+                }   
                 //direct hit
                 if (projX == player.Position[0] && projY == player.Position[1])
                 {
-                    System.Console.WriteLine("❌❌❌❌❌❌❌❌❌❌❌❌");
-                    Console.WriteLine($"❌{player.Symbol} was hit❗ Lost 💔❌");
-                    System.Console.WriteLine("❌❌❌❌❌❌❌❌❌❌❌❌");
+                    System.Console.WriteLine($"\n\n{offsetTitle}❌❌❌❌❌❌❌❌❌❌❌❌");
+                    Console.WriteLine($"{offsetTitle}❌{player.Symbol} was hit❗ Lost 💔❌");
+                    System.Console.WriteLine($"{offsetTitle}❌❌❌❌❌❌❌❌❌❌❌❌\n");
                     player.HP -= Stage.actualProjectile.Damage;
                     playerCollision = true;
                     if (player.HP <= 0)
                     {
-                        Player.Sound("Fatality.wav");
+                        Player.Sound("Hit.wav");
                         player.Position[0] = 200;
+                        Stage.deadList.Insert(0, player.Symbol);
                     }
-                    string[] audios = { "Bonk.wav", "Bum.wav", "Bum.wav","Hit.wav" };
+                    string[] audios = { "Bonk.wav", "Bum.wav", "Bum.wav","Fatality.wav" };
                     Sound(audios[int.Parse(Stage.actualProjectile.Tipo) - 1]);
                     return (dir, playerCollision);
 

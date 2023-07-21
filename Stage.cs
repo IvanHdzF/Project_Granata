@@ -20,6 +20,7 @@ namespace Granata
         public static List<Projectile> objectMinesList = new List<Projectile>();
         public static List<Obstacle> objectObstacleList = new List<Obstacle>();
         public static List<Player> players = new List<Player>();
+        public static List<string> deadList = new List<string>();
 
         public static int selectedNumberOfObstacle = 5;
         public static List<Obstacle> selectionOfObstacle;

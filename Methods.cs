@@ -10,6 +10,7 @@ namespace Granata
 {
     class Methods
     {
+        public static string offset_title= " ";
         public static string IntroSound()
         {
             // Ruta al archivo de audio
@@ -22,6 +23,7 @@ namespace Granata
                 // Crea un objeto WaveFileReader para leer el archivo de audio
                 using (var audioFileReader = new WaveFileReader(audioFilePath))
                 {
+                    Console.Clear();
                     char iniciar = '?';
                     // Asigna el objeto WaveFileReader al WaveOut
                     waveOut.Init(audioFileReader);
@@ -76,16 +78,18 @@ namespace Granata
                 {                    
                     return;
                 }
+
+                offset_title = " ";
+
                 Stage.players[playerN].ShowInventory(playerN);
-                string offset_title= " ";
-                for (int i = 0; i < Stage.gridSize - 23; i ++)
+                for (int i = 0; i < Stage.gridSize - 12; i ++)
                 {
                     offset_title+= " ";
 
                 }   
-                Console.WriteLine(offset_title+"🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
-                System.Console.Write($"{offset_title}🟥 Player {playerN+1} What do you want to do? WASD to 🕹️ . You have {maxActionCount-actionCount} move actions left to end turn 🟥\n{offset_title}🟥 Numberpad numbers to Throw............................................................ 🟥\n");
-                Console.WriteLine(offset_title+"🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
+                Console.WriteLine(offset_title+"🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
+                System.Console.Write($"{offset_title}🟥  {Stage.players[playerN].Symbol} ➖ Press WASD to 🕹️ . You have {maxActionCount-actionCount} move actions left to end turn 🟥\n{offset_title}🟥  Numberpad numbers to Throw....................................... 🟥\n");
+                Console.WriteLine(offset_title+"🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥");
                 System.Console.WriteLine("\n");
                 char input = Console.ReadKey().KeyChar;
                 System.Console.WriteLine();
@@ -123,7 +127,7 @@ namespace Granata
                             offset_text+= " ";
                         } 
                         Console.WriteLine($"{offset_text}🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷");
-                        System.Console.Write($"\n{offset_text}   Select a projectile\n\n{offset_text}   1️⃣  for ⚾\n{offset_text}   2️⃣  for ⛔\n{offset_text}   3️⃣  for 📛\n{offset_text}   4️⃣  for 📀\n");
+                        System.Console.Write($"\n{offset_text}   Select a projectile\n\n{offset_text}   1️⃣  for ⚾\n{offset_text}   2️⃣  for ⛔\n{offset_text}   3️⃣  for 💠\n{offset_text}   4️⃣  for 📀\n");
                         Console.WriteLine($"\n{offset_text}🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷");
 
                         string projType = StringIntInput(1, 4);
@@ -155,7 +159,7 @@ namespace Granata
                         done = true;
                         break;
                     default:
-                        Console.WriteLine("❌❌❌❌   Enter a valid action❗    ❌❌❌❌");
+                        Console.WriteLine($"{offset_title}❌❌❌❌   Enter a valid action❗    ❌❌❌❌\n");
                         break;
                 }
             }
@@ -177,13 +181,13 @@ namespace Granata
                 case "4":
                     return new Projectile("4", pos, dir, 10001, 10, 0, "📀");
                 default:
-                    System.Console.WriteLine("❌❌❌   Not a valid type❗    ❌❌❌");
+                    System.Console.WriteLine($"{offset_title}❌❌❌   Not a valid type❗    ❌❌❌\n");
                     return null;
             }
         }
         internal static void supplyProjectiles()
         {
-            System.Console.WriteLine("❌❌❌  Supplying projectiles ⬇️  ❌❌❌");
+            System.Console.WriteLine($"{offset_title}❌❌❌  Supplying projectiles ⬇️  ❌❌❌\n");
             foreach (var player in Stage.players)
             {
                 player.Refill();
@@ -203,13 +207,13 @@ namespace Granata
                 done = int.TryParse(input, out value);
                 if (!done)
                 {
-                    System.Console.WriteLine("❌❌❌❌   Please input an integer value❗   ❌❌❌❌");
+                    System.Console.WriteLine($"{offset_title}❌❌❌❌   Please input an integer value❗   ❌❌❌❌\n");
                     continue;
                 }
                 if (value > maxValue)
                 {
                     done = false;
-                    System.Console.WriteLine($"❌❌❌❌   Max value is {maxValue}❗   ❌❌❌❌");
+                    System.Console.WriteLine($"{offset_title}❌❌❌❌   Max value is {maxValue}❗   ❌❌❌❌\n");
                 }
             }
         }
@@ -227,7 +231,7 @@ namespace Granata
                 }
                 else
                 {
-                    System.Console.WriteLine($"❌❌❌❌   Select a value between {minValue} and {maxValue}   ❌❌❌❌");
+                    System.Console.WriteLine($"{offset_title}❌❌❌❌   Select a value between {minValue} and {maxValue}   ❌❌❌❌\n");
                 }
 
             }

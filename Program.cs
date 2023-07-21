@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml;
 
 namespace Granata
 {
@@ -17,14 +18,12 @@ namespace Granata
         static int maxTurnCountMax = 60;
         static int playerCountMax = 4;
         static int supplyCooldownMax = 61;
-        static int stageSizeMax = 60;
-        static int stageSizeMin = 11;
+        static int stageSizeMax = 35;
+        static int stageSizeMin = 15;
         static string filePath { get; } = "config.txt";
 
         static void Main(string[] args)
         {
-
-
             InitConfig();
             ReadConfig();
             bool done = false;
@@ -60,7 +59,7 @@ namespace Granata
             playerCount = 2;
             supplyCooldown = 10;
             stageSize = 30;
-            System.Console.WriteLine("❌❌❌❌❌❌  Config.txt file doesn't exist, creating one...  ❌❌❌❌❌❌");
+            System.Console.WriteLine("                       ❌❌❌❌❌❌  Config.txt file doesn't exist, creating one...  ❌❌❌❌❌❌");
             WriteConfig(maxTurnCount, playerCount, supplyCooldown, stageSize);
         }
 
@@ -151,7 +150,7 @@ namespace Granata
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception: " + e.Message);
+                Console.WriteLine("                       🔸🔸🔸🔸  Exception: " + e.Message + "  🔸🔸🔸🔸\n");
             }
         }
         static void Game()
@@ -193,11 +192,25 @@ namespace Granata
             }
             if (aliveCount == 1)
             {
-                string spacestr = "                          ";
-                System.Console.WriteLine($"{spacestr}🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇");
-                System.Console.WriteLine($"{spacestr}🎇🎇  👑              🎇🎇");
-                System.Console.WriteLine($"{spacestr}🎇🎇  {alive} won!  🍾🏆   🎇🎇");
-                System.Console.WriteLine($"{spacestr}🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇");
+                Console.Clear();
+                string spacestr = "                                           ";
+                System.Console.WriteLine($"\n\n\n{spacestr} 🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨");
+                System.Console.WriteLine($"{spacestr} 🟨                  🟨");
+                System.Console.WriteLine($"{spacestr} 🟨  👑              🟨");
+                System.Console.WriteLine($"{spacestr} 🟨  {alive} won!  🍾🏆   🟨");
+                System.Console.WriteLine($"{spacestr} 🟨                  🟨");
+                System.Console.WriteLine($"{spacestr} 🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨\n\n\n");
+                string[] trophySymbols={"🥈", "🥉", "💩"};
+
+                System.Console.WriteLine($"{spacestr}🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫");
+                System.Console.WriteLine($"{spacestr}🟫                    🟫");
+
+                for (int i = 0; i < Stage.deadList.Count;i++)    
+                {
+                    System.Console.WriteLine($"{spacestr}🟫     {Stage.deadList[i]} ➖➖ {trophySymbols[i]}     🟫");
+                }
+                System.Console.WriteLine($"{spacestr}🟫                    🟫");
+                System.Console.WriteLine($"{spacestr}🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫\n\n\n");
                 
                 Player.Sound("Victory.wav");
                 return true;
@@ -207,6 +220,7 @@ namespace Granata
         static void CleanBoard()
         {
             Stage.players.Clear();
+            Stage.deadList.Clear();
             Stage.objectObstacleList.Clear();
             Stage.objectMinesList.Clear();
         }
